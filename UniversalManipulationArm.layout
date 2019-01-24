@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="KGrafika3D.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="1477" topLine="11" />
+	</File>
+	<File name="KGrafika3D.h" open="1" top="0" tabpos="2">
+		<Cursor position="159" topLine="9" />
+	</File>
+	<File name="Shader.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="Shader.h" open="1" top="0" tabpos="5">
+		<Cursor position="0" topLine="15" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="275" topLine="63" />
+	</File>
+</CodeBlocks_layout_file>

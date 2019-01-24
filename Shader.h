@@ -1,0 +1,39 @@
+#ifndef SHADER_H
+#define SHADER_H
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <cstdio>
+
+#define GLEW_STATIC
+#include <glew.h>
+
+using namespace std;
+
+class Shader
+{
+    GLuint shaderProgram;
+    vector <uint32_t> shaderIDs;
+
+    string WczytajPlik(const char* plik);
+    int StworzShader(const char* nazwaPliku, GLenum shaderTyp);
+    void WypiszBledyKompilacji(int32_t shaderID);
+    uint8_t KompilujShader(int shaderID);
+    void WypiszBledyLinkowania(int32_t shaderID);
+
+    public:
+
+    Shader(): shaderProgram(0){;}
+    uint8_t Init();
+    uint8_t WczytajShader(const char* nazwaPliku, GLenum shaderTyp);
+    uint8_t LinkowanieShader();
+    void Sprzatanie();
+    void Uzyjprogramu();
+    GLuint ZwrocProgramID(){return shaderProgram;}
+
+};
+
+#endif

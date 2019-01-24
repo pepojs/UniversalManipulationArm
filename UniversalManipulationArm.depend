@@ -1,0 +1,32 @@
+# depslib dependency file v1.0
+1533224320 source:c:\users\piotr\documents\usp\universalmanipulationarm\shader.cpp
+	"Shader.h"
+
+1533216539 c:\users\piotr\documents\usp\universalmanipulationarm\shader.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<vector>
+	<cstdio>
+	<glew.h>
+
+1546536456 source:c:\users\piotr\documents\usp\universalmanipulationarm\main.cpp
+	<SDL.h>
+	<glew.h>
+	<iostream>
+	<ctime>
+	"KGrafika3D.h"
+
+1546536866 source:c:\users\piotr\documents\usp\universalmanipulationarm\kgrafika3d.cpp
+	"KGrafika3D.h"
+
+1546536700 c:\users\piotr\documents\usp\universalmanipulationarm\kgrafika3d.h
+	<iostream>
+	<string>
+	<cstdio>
+	<vector>
+	<SDL.h>
+	<glew.h>
+	"Shader.h"
+
