@@ -1,4 +1,5 @@
 #include "Shader.h"
+
 uint8_t SprawdzGLError1()
 {
     GLenum err;
@@ -173,4 +174,16 @@ void Shader::Uzyjprogramu()
 {
     //Laduje shader do sterty renderingu
     glUseProgram(shaderProgram);
+}
+
+//Pozwala z programu przekazac macierz 4x4 do Shedera jako uniform mat4 NazwaWShederze
+void Shader::PrzekazMacierz4x4(const char* NazwaWShederze, mat4 macierz)
+{
+    if(shaderProgram != 0)
+    {
+        //Sprawdza polozenie naszej zmiennej w shederze i przekazuje dane w postaci macierzy
+        GLuint PozycjaMacierzy = glGetUniformLocation(shaderProgram, NazwaWShederze);
+        glUniformMatrix4fv(PozycjaMacierzy, 1, GL_FALSE, value_ptr(macierz));
+    }
+
 }

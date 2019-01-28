@@ -30,3 +30,40 @@
 	<glew.h>
 	"Shader.h"
 
+1548681857 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.cpp
+	"KGrafika3D.h"
+
+1548678548 c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.h
+	<iostream>
+	<string>
+	<cstdio>
+	<vector>
+	<SDL.h>
+	<glew.h>
+	"Shader.h"
+
+1548679477 c:\users\bogdo\documents\programy\universalmanipulationarm\shader.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<vector>
+	<cstdio>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	<glew.h>
+
+1548681824 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
+	<SDL.h>
+	<glew.h>
+	<iostream>
+	<ctime>
+	"KGrafika3D.h"
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+
+1548679477 source:c:\users\bogdo\documents\programy\universalmanipulationarm\shader.cpp
+	"Shader.h"
+

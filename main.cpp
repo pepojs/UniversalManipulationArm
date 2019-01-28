@@ -4,25 +4,133 @@
 #define GLEW_STATIC
 #include <glew.h>
 
+
 #include <iostream>
 #include <ctime>
 #include "KGrafika3D.h"
-
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #undef main
 
 using namespace std;
 
+GLfloat Kolory1[] ={
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f
+};
+
+GLfloat Kolory2[] ={
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f
+};
+
+GLfloat KolorySzescianu[] = {
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+    0.5f, 0.25f, 0.5f, 1.0f,
+
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f,
+};
+
 GLfloat Obiekt1[] ={
     -0.5f, -0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,
-    0.0f, 0.5f, 0.0f
+    0.0f, 0.5f, 0.0f,
+    0.0f, 0.0f, -0.5f
 };
 
 GLfloat Obiekt2[] ={
     -0.2f, -0.2f, 0.0f,
     0.8f, -0.8f, 0.0f,
     0.0f, 0.1f, 0.0f
+};
+
+GLfloat Szescian[] ={
+    -0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+
+    -0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
+
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+
+    -0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f, -0.5f,
+
+    -0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f
 };
 
 const float rozmiar_sceny = 25;
@@ -356,7 +464,7 @@ void UstawObjektyBuff(GLuint *vbo, GLuint *vao, Lancuch Lan)
     glBufferData(GL_ARRAY_BUFFER, (Lan.ZwrocZawCzlonu("L0").IlePunktow*Lan.ZwrocZawCzlonu("L0").IleWspol)*sizeof(GLfloat), Lan.ZwrocZawCzlonu("L0").Punkty, GL_STATIC_DRAW);
 
 
-    //Przekazuje informacje natemat tablicy umieszczonej w buforze do VAO
+    //Przekazuje informacje na temat tablicy umieszczonej w buforze do VAO
     glVertexAttribPointer(pozycjaAttributeIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     //Wlacza pobieranie atrybutu z tablicy VAO
@@ -533,7 +641,6 @@ int main()
     SDL_GLContext GlownyKonteks;
     Grafika3D Scena;
 
-
     //GLuint vbo[11], vao[5];
    // Shader shader;
    // Joint tempJ;
@@ -562,12 +669,19 @@ int main()
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Scena.NowyObiekt(Obiekt1, sizeof(Obiekt1));
-    Scena.NowyObiekt(Obiekt2, sizeof(Obiekt2));
+    //Scena.NowyObiekt(Obiekt1, sizeof(Obiekt1), 3, Kolory1, sizeof(Kolory1), 4);
+    //Scena.NowyObiekt(Obiekt2, sizeof(Obiekt2), 3, Kolory2, sizeof(Kolory2), 4);
+    Scena.NowyObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4);
+
 //    UstawObjektyBuff(vbo, vao, Lan);
 
     Scena.ZwrocAdresShadera()->Uzyjprogramu();
 
+    glm::mat4 tran = glm::mat4(1.0f);
+    tran = glm::translate(tran, glm::vec3(0.0f, 0.0f, -1.0f));
+    tran = glm::rotate(tran, 70.0f, glm::vec3(0.0f, 1.0f, 1.0f));
+    Scena.ZwrocAdresShadera()->PrzekazMacierz4x4("transformacja", tran);
+    Scena.UstawRzutowanieOrtogonalne(-2.0f, 2.0,-2.0f, 2.0, 0.1, 100.0f);
     //Petla glowna, obsluga zdarzen{
     char petla = 1;
     SDL_Event zdarzenie;
@@ -589,7 +703,7 @@ int main()
                     break;
 
                     case SDLK_r:
-                    Scena.Rysuj(GlowneOkno);
+                        Scena.Rysuj(GlowneOkno);
                     break;
 
                     default:

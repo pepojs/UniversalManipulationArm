@@ -8,10 +8,15 @@
 #include <vector>
 #include <cstdio>
 
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
 #define GLEW_STATIC
 #include <glew.h>
 
 using namespace std;
+using namespace glm;
 
 class Shader
 {
@@ -33,6 +38,8 @@ class Shader
     void Sprzatanie();
     void Uzyjprogramu();
     GLuint ZwrocProgramID(){return shaderProgram;}
+
+    void PrzekazMacierz4x4(const char* NazwaWShaderze, mat4 macierz);
 
 };
 

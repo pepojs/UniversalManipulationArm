@@ -23,7 +23,12 @@ class Grafika3D
     public:
     ~Grafika3D();
     Shader* ZwrocAdresShadera(){return &shader;}
-    void NowyObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicy);
+    void NowyObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicy, uint8_t IloscWspolrzednychPunktu);
+    void NowyObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicy, uint8_t IloscWspolrzednychPunktu,
+                     GLvoid* TablicaKolorow, size_t RozmiarTablicyKolorow, uint8_t IloscWspolrzednychKoloru);
+    void UstawRzutowanieOrtogonalne(GLfloat Lewa, GLfloat Prawa, GLfloat Dol, GLfloat Gora, GLfloat Przod, GLfloat Tyl);
+    void UstawRzutowaniePerspektywiczne(GLfloat Kat, GLfloat ProporcjeEkranu, GLfloat Przod, GLfloat Tyl);
+
     void Rysuj(SDL_Window* GlowneOkno);
 
 };
