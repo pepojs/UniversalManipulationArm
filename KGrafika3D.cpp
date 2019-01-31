@@ -106,6 +106,21 @@ void Grafika3D::UstawRzutowaniePerspektywiczne(GLfloat Kat, GLfloat ProporcjeEkr
     shader.PrzekazMacierz4x4("rzutowanie", rzut);
 }
 
+//Ustawia kamere na scenie, pierwszy parametr to wspolrzedne globalne kamery na scenie,
+//drugi to punkt, na ktory "patrzy" kamera, trzeci to kierunek osi Z kamery
+void Grafika3D::UstawKamere(glm::vec3 Pozycja, glm::vec3 Cel, glm::vec3 OsZ)
+{
+    glm::mat4 widok;
+
+    PozycjaKamery = Pozycja;
+    CelKamery = Cel;
+    OsZKamery = OsZ;
+
+    widok = glm::lookAt(Pozycja, Cel, OsZ); //Tworzy macierz pozwalajaca przeksztalcic scene z przeszczeni globalnej do przestrzeni widoku
+
+    shader.PrzekazMacierz4x4("widok", widok);
+}
+
 void Grafika3D::Rysuj(SDL_Window* GlowneOkno)
 {
     glClearColor(0.0, 0.0, 0.0, 1.0); //Ustawia kolor tla

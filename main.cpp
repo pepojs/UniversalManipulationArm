@@ -677,11 +677,13 @@ int main()
 
     Scena.ZwrocAdresShadera()->Uzyjprogramu();
 
-    glm::mat4 tran = glm::mat4(1.0f);
-    tran = glm::translate(tran, glm::vec3(0.0f, 0.0f, -1.0f));
-    tran = glm::rotate(tran, 70.0f, glm::vec3(0.0f, 1.0f, 1.0f));
-    Scena.ZwrocAdresShadera()->PrzekazMacierz4x4("transformacja", tran);
-    Scena.UstawRzutowanieOrtogonalne(-2.0f, 2.0,-2.0f, 2.0, 0.1, 100.0f);
+    //glm::mat4 tran = glm::mat4(1.0f);
+    //tran = glm::translate(tran, glm::vec3(0.0f, 0.0f, -1.0f));
+    //tran = glm::rotate(tran, 70.0f, glm::vec3(0.0f, 1.0f, 1.0f));
+    //Scena.ZwrocAdresShadera()->PrzekazMacierz4x4("transformacja", tran);
+    //Scena.UstawRzutowanieOrtogonalne(-2.0f, 2.0,-2.0f, 2.0, 0.1, 100.0f);
+    Scena.UstawRzutowaniePerspektywiczne(45, 1, 0.1, 100);
+    Scena.UstawKamere(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     //Petla glowna, obsluga zdarzen{
     char petla = 1;
     SDL_Event zdarzenie;
@@ -706,6 +708,9 @@ int main()
                         Scena.Rysuj(GlowneOkno);
                     break;
 
+                    case SDLK_s:
+                        Scena.UstawKamere(Scena.ZwrocPozycjeKamery()+glm::vec3(0.0f,0.0f,0.2f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
                     default:
                     break;
 

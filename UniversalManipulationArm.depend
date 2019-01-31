@@ -30,10 +30,10 @@
 	<glew.h>
 	"Shader.h"
 
-1548681857 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.cpp
+1548964176 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.cpp
 	"KGrafika3D.h"
 
-1548678548 c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.h
+1548956644 c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.h
 	<iostream>
 	<string>
 	<cstdio>
@@ -54,7 +54,7 @@
 	<gtc/type_ptr.hpp>
 	<glew.h>
 
-1548681824 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
+1548965401 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
 	<SDL.h>
 	<glew.h>
 	<iostream>
