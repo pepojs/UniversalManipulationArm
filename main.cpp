@@ -43,7 +43,6 @@ GLfloat KolorySzescianu[] = {
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f,
 
     0.5f, 0.25f, 0.5f, 1.0f,
     0.5f, 0.25f, 0.5f, 1.0f,
@@ -58,7 +57,6 @@ GLfloat KolorySzescianu[] = {
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f,
 
     0.5f, 0.25f, 0.5f, 1.0f,
     0.5f, 0.25f, 0.5f, 1.0f,
@@ -67,7 +65,6 @@ GLfloat KolorySzescianu[] = {
     0.5f, 0.25f, 0.5f, 1.0f,
     0.5f, 0.25f, 0.5f, 1.0f,
 
-    0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
@@ -75,6 +72,7 @@ GLfloat KolorySzescianu[] = {
     0.5f, 0.5f, 0.5f, 1.0f,
     0.5f, 0.5f, 0.5f, 1.0f,
 };
+
 
 GLfloat Obiekt1[] ={
     -0.5f, -0.5f, 0.0f,
@@ -132,6 +130,53 @@ GLfloat Szescian[] ={
     -0.5f,  0.5f,  0.5f,
     -0.5f,  0.5f, -0.5f
 };
+
+GLfloat SzescianWspolnaTablica[] ={
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+
+
+};
+
 
 const float rozmiar_sceny = 25;
 
@@ -640,6 +685,19 @@ int main()
     SDL_Window* GlowneOkno;
     SDL_GLContext GlownyKonteks;
     Grafika3D Scena;
+    GLuint szescian;
+    GLuint IDszescianow[4];
+    GLuint IDtekstur[2];
+
+    clock_t zegar0;
+    float czas_app, czas_app0, delta_czas;
+    float model_obrot_kat = 0.0f;
+    float skala = 1.0f;
+    float mnoznik = -1;
+
+    zegar0 = clock();
+    czas_app = 0.0;
+    delta_czas = 0.0;
 
     //GLuint vbo[11], vao[5];
    // Shader shader;
@@ -671,9 +729,31 @@ int main()
 
     //Scena.NowyObiekt(Obiekt1, sizeof(Obiekt1), 3, Kolory1, sizeof(Kolory1), 4);
     //Scena.NowyObiekt(Obiekt2, sizeof(Obiekt2), 3, Kolory2, sizeof(Kolory2), 4);
-    Scena.NowyObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4);
+    //Scena.NowyObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4);
 
 //    UstawObjektyBuff(vbo, vao, Lan);
+
+    //szescian = Scena.TworzObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4);
+    IDtekstur[0] = Scena.GenerujTeksture2D("container.jpg", GL_REPEAT, GL_LINEAR);
+    IDtekstur[1] = Scena.GenerujTeksture2D("awesomeface.png", GL_REPEAT, GL_LINEAR);
+
+    IDszescianow[0] = Scena.DodajObiekt(SzescianWspolnaTablica, sizeof(SzescianWspolnaTablica), 3, 0, 2, 36);
+
+    Scena.DodajTekstureDoObiektu(IDtekstur[0], IDszescianow[0]);
+    Scena.DodajTekstureDoObiektu(IDtekstur[1], IDszescianow[0]);
+
+    IDszescianow[1] = Scena.KopiujObiekt(IDszescianow[0]);
+    IDszescianow[2] = Scena.KopiujObiekt(IDszescianow[0]);
+    IDszescianow[3] = Scena.DodajObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4, 36);
+
+    Scena.PrzesunObiekt(IDszescianow[0], glm::vec3(1.5f, 0.0f, 0.0f));
+    Scena.PrzesunObiekt(IDszescianow[1], glm::vec3(-1.5f, 0.0f, 0.0f));
+    Scena.PrzesunObiekt(IDszescianow[2], glm::vec3(0.0f, 1.5f, 0.0f));
+    Scena.PrzesunObiekt(IDszescianow[3], glm::vec3(0.0f, -1.5f, 0.0f));
+
+
+    //Scena.DodajTekstureDoObiektu(IDtekstur[0], IDszescianow[2]);
+
 
     Scena.ZwrocAdresShadera()->Uzyjprogramu();
 
@@ -690,6 +770,24 @@ int main()
 
     while(petla)
     {
+        czas_app0 = (float)(clock())/CLOCKS_PER_SEC;
+        delta_czas = czas_app0 - czas_app;
+        czas_app = czas_app0;
+
+        model_obrot_kat += 0.01*delta_czas;
+        skala += 0.01*mnoznik*delta_czas;
+
+        if(model_obrot_kat>= 2*M_PI)model_obrot_kat -= 2*M_PI;
+        if(skala <= 0.975 || skala >= 1.025f)mnoznik = -mnoznik;
+
+        Scena.ObrocObiekt(IDszescianow[0], model_obrot_kat, glm::vec3(0.0f, 1.0f, 0.0f));
+        Scena.ObrocObiekt(IDszescianow[1], -model_obrot_kat, glm::vec3(0.0f, 1.0f, 0.0f));
+        Scena.ObrocObiekt(IDszescianow[2], model_obrot_kat, glm::vec3(1.0f, 0.0f, 0.0f));
+        Scena.ObrocObiekt(IDszescianow[3], -model_obrot_kat, glm::vec3(1.0f, 0.0f, 0.0f));
+
+        Scena.PrzeskalujObiekt(IDszescianow[0], glm::vec3(skala,skala,skala));
+        Scena.Rysuj(GlowneOkno);
+
 
         while(SDL_PollEvent(&zdarzenie))
         {
@@ -711,6 +809,13 @@ int main()
                     case SDLK_s:
                         Scena.UstawKamere(Scena.ZwrocPozycjeKamery()+glm::vec3(0.0f,0.0f,0.2f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                         Scena.Rysuj(GlowneOkno);
+                    break;
+
+                    case SDLK_w:
+                        Scena.UstawKamere(Scena.ZwrocPozycjeKamery()-glm::vec3(0.0f,0.0f,0.2f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
                     default:
                     break;
 

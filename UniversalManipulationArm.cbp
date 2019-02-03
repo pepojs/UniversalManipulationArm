@@ -32,6 +32,7 @@
 		</Linker>
 		<Unit filename="KGrafika3D.cpp" />
 		<Unit filename="KGrafika3D.h" />
+		<Unit filename="SObiektNaScenie.h" />
 		<Unit filename="Shader.cpp" />
 		<Unit filename="Shader.h" />
 		<Unit filename="main.cpp" />

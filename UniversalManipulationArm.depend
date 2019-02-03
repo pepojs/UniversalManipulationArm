@@ -30,17 +30,20 @@
 	<glew.h>
 	"Shader.h"
 
-1548964176 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.cpp
+1549209179 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.cpp
 	"KGrafika3D.h"
 
-1548956644 c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.h
+1549200567 c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.h
 	<iostream>
 	<string>
 	<cstdio>
 	<vector>
 	<SDL.h>
+	<SOIL.h>
+	<cstdio>
 	<glew.h>
 	"Shader.h"
+	"SObiektNaScenie.h"
 
 1548679477 c:\users\bogdo\documents\programy\universalmanipulationarm\shader.h
 	<iostream>
@@ -54,7 +57,7 @@
 	<gtc/type_ptr.hpp>
 	<glew.h>
 
-1548965401 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
+1549209179 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
 	<SDL.h>
 	<glew.h>
 	<iostream>
@@ -66,4 +69,10 @@
 
 1548679477 source:c:\users\bogdo\documents\programy\universalmanipulationarm\shader.cpp
 	"Shader.h"
+
+1549192738 c:\users\bogdo\documents\programy\universalmanipulationarm\sobiektnascenie.h
+	<vector>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
 
