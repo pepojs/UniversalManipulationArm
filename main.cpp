@@ -12,9 +12,66 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
+#include "KLancuchKinematyczny.h"
+#include "KManipulator.h"
+
 #undef main
 
 using namespace std;
+
+GLfloat PunktyOgniw[] = {
+    0.0f, 0.0f,  0.0f,
+    15.0f, 0.0f, 0.0f
+};
+
+GLfloat KolorOgniw[] = {
+    1.0f, 0.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 0.0f, 1.0f
+};
+
+GLfloat KolorOgniw1[] = {
+    0.0f, 1.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 0.0f, 1.0f
+};
+
+
+GLfloat Kwadrat[] = {
+    -1.0f, -1.0f, 0.0f,
+     1.0f, -1.0f, 0.0f,
+     -1.0f, 1.0f, 0.0f,
+     -1.0f, 1.0f, 0.0f,
+     1.0f, 1.0f, 0.0f,
+     1.0f, -1.0f, 0.0f
+};
+
+GLfloat KwadratKolor[] = {
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f
+};
+
+GLfloat OsX[] = {
+    -1.0f, 0.0f, 0.0f,
+     1.0f, 0.0f, 0.0f
+};
+
+GLfloat OsY[] = {
+    0.0f, -1.0f, 0.0f,
+    0.0f,  1.0f, 0.0f
+};
+
+GLfloat OsZ[] = {
+    0.0f, 0.0f, -1.0f,
+    0.0f, 0.0f,  1.0f
+};
+
+GLfloat KolorOsi[] = {
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f
+};
 
 GLfloat Kolory1[] ={
     0.5f, 0.25f, 0.5f, 1.0f,
@@ -680,24 +737,119 @@ void Animacja(SDL_Window* GlowneOkno, GLuint vbo[11], GLuint vao[5], Lancuch Lan
 }
 
 */
+void RysujUkladWspolrzednych(Grafika3D* Scena)
+{
+    GLuint IDOsi[3];
+    GLuint IDPodzialka;
+
+    IDOsi[0] = Scena->DodajObiekt(OsX,sizeof(OsX), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDOsi[1] = Scena->DodajObiekt(OsY,sizeof(OsY), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDOsi[2] = Scena->DodajObiekt(OsZ,sizeof(OsZ), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+
+    Scena->PrzeskalujObiekt(IDOsi[0], glm::vec3(100.0f, 0.0f, 0.0f));
+    Scena->PrzeskalujObiekt(IDOsi[1], glm::vec3(0.0f, 100.0f, 0.0f));
+    Scena->PrzeskalujObiekt(IDOsi[2], glm::vec3(0.0f, 0.0f, 100.0f));
+
+    for(int i = 0; i < 200; i+=5)
+    {
+        //Podzialka osi X
+        IDPodzialka = Scena->DodajObiekt(OsY,sizeof(OsY), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+        Scena->PrzesunObiekt(IDPodzialka, glm::vec3(100.0f - i, 0.0f, 0.0f));
+
+        IDPodzialka = Scena->DodajObiekt(OsZ,sizeof(OsZ), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+        Scena->PrzesunObiekt(IDPodzialka, glm::vec3(100.0f - i, 0.0f, 0.0f));
+
+        //Podzialka osi Y
+        IDPodzialka = Scena->DodajObiekt(OsX,sizeof(OsX), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+        Scena->PrzesunObiekt(IDPodzialka, glm::vec3(0.0f, 100.0f - i, 0.0f));
+
+        IDPodzialka = Scena->DodajObiekt(OsZ,sizeof(OsZ), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+        Scena->PrzesunObiekt(IDPodzialka, glm::vec3(0.0f, 100.0f - i, 0.0f));
+
+        //Podzialka osi Z
+        IDPodzialka = Scena->DodajObiekt(OsX,sizeof(OsX), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+        Scena->PrzesunObiekt(IDPodzialka, glm::vec3(0.0f, 0.0f, 100.0f - i));
+
+        IDPodzialka = Scena->DodajObiekt(OsY,sizeof(OsY), 3, KolorOsi, sizeof(KolorOsi), 4, 2, Graf3D_PolaczonaKrawedz);
+        Scena->PrzesunObiekt(IDPodzialka, glm::vec3(0.0f, 0.0f, 100.0f - i));
+    }
+
+}
+
 int main()
 {
     SDL_Window* GlowneOkno;
     SDL_GLContext GlownyKonteks;
     Grafika3D Scena;
-    GLuint szescian;
-    GLuint IDszescianow[4];
+    GLuint IDszescianow;
+    GLuint IDKwadratu;
     GLuint IDtekstur[2];
+    Manipulator<Ogniwo,Przegub> NowyManipulator(&Scena);
+    uint16_t IDPrzegubuManipulatora[2];
+
+    GLfloat KatF = 0.0f, KatT = 0.0f, KatG = 0.0f;
 
     clock_t zegar0;
     float czas_app, czas_app0, delta_czas;
     float model_obrot_kat = 0.0f;
-    float skala = 1.0f;
     float mnoznik = -1;
 
     zegar0 = clock();
     czas_app = 0.0;
     delta_czas = 0.0;
+
+    uint16_t IDPrzegubow[5];
+    uint16_t IDOgniw[7];
+    GLuint IDObiektuOgniwa[7];
+    glm::mat4 MacierzPom = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+    Przegub PomPrzegub;
+    PomPrzegub.TypPrzegubu = PrzegubRotacyjny;
+    PomPrzegub.WartoscKonfiguracji = 0.0f;
+    PomPrzegub.KinematykaPrzegubu = glm::mat4(1.0f);
+
+    Ogniwo PomOgniwo;
+    PomOgniwo.TablicaPunktow = PunktyOgniw;
+    PomOgniwo.RozmiarTablicy = sizeof(PunktyOgniw);
+    PomOgniwo.IloscWspolrzednych = 3;
+    PomOgniwo.IloscPunktow = 2;
+    PomOgniwo.MacierzRotZ = PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom; //glm::rotate(MacierzPom, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzRotX = glm::mat4(1.0f);
+    PomOgniwo.MacierzTranZ = PomOgniwo.MacierzPoczatkowaTranZ = glm::mat4(1.0f);
+    PomOgniwo.MacierzTranX = glm::translate(MacierzPom, glm::vec3(15.0f, 0.0f, 0.0f));
+
+
+    LancuchKinematyczny<Ogniwo,Przegub> LanKim;
+    IDPrzegubow[0] = LanKim.DodajPrzegub(PomPrzegub);
+    IDPrzegubow[1] = LanKim.DodajPrzegub(PomPrzegub);
+    IDPrzegubow[2] = LanKim.DodajPrzegub(PomPrzegub);
+    IDPrzegubow[3] = LanKim.DodajPrzegub(PomPrzegub);
+    IDPrzegubow[4] = LanKim.DodajPrzegub(PomPrzegub);
+
+
+    IDOgniw[2] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[1], IDPrzegubow[3]);
+    IDOgniw[3] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[3], IDPrzegubow[4]);
+
+
+    IDOgniw[5] = LanKim.DodajKoncoweOgniwo(PomOgniwo,IDPrzegubow[2]);
+
+    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)M_PI_4, glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
+
+    IDOgniw[1] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[0], IDPrzegubow[2]);
+
+    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)(M_PI_2+M_PI_4), glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
+
+    IDOgniw[0] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[0], IDPrzegubow[1]);
+
+    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)(-M_PI_2), glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
+    IDOgniw[6] = LanKim.DodajKoncoweOgniwo(PomOgniwo,IDPrzegubow[3]);
+
+    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)(M_PI_2), glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
+    IDOgniw[4] = LanKim.DodajKoncoweOgniwo(PomOgniwo,IDPrzegubow[2]);
 
     //GLuint vbo[11], vao[5];
    // Shader shader;
@@ -724,36 +876,63 @@ int main()
         return -1;
 */
     glDepthFunc(GL_LEQUAL);
-
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    Scena.WczytajCzciake("arial.ttf", 48, 128, 0);
 
     //Scena.NowyObiekt(Obiekt1, sizeof(Obiekt1), 3, Kolory1, sizeof(Kolory1), 4);
     //Scena.NowyObiekt(Obiekt2, sizeof(Obiekt2), 3, Kolory2, sizeof(Kolory2), 4);
     //Scena.NowyObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4);
 
-//    UstawObjektyBuff(vbo, vao, Lan);
+    //   UstawObjektyBuff(vbo, vao, Lan);
 
     //szescian = Scena.TworzObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4);
     IDtekstur[0] = Scena.GenerujTeksture2D("container.jpg", GL_REPEAT, GL_LINEAR);
     IDtekstur[1] = Scena.GenerujTeksture2D("awesomeface.png", GL_REPEAT, GL_LINEAR);
 
-    IDszescianow[0] = Scena.DodajObiekt(SzescianWspolnaTablica, sizeof(SzescianWspolnaTablica), 3, 0, 2, 36);
+    IDszescianow = Scena.DodajObiekt(SzescianWspolnaTablica, sizeof(SzescianWspolnaTablica), 3, 0, 2, 36);
 
-    Scena.DodajTekstureDoObiektu(IDtekstur[0], IDszescianow[0]);
-    Scena.DodajTekstureDoObiektu(IDtekstur[1], IDszescianow[0]);
+    Scena.DodajTekstureDoObiektu(IDtekstur[0], IDszescianow);
+    Scena.DodajTekstureDoObiektu(IDtekstur[1], IDszescianow);
 
-    IDszescianow[1] = Scena.KopiujObiekt(IDszescianow[0]);
-    IDszescianow[2] = Scena.KopiujObiekt(IDszescianow[0]);
-    IDszescianow[3] = Scena.DodajObiekt(Szescian, sizeof(Szescian), 3, KolorySzescianu, sizeof(KolorySzescianu), 4, 36);
-
-    Scena.PrzesunObiekt(IDszescianow[0], glm::vec3(1.5f, 0.0f, 0.0f));
-    Scena.PrzesunObiekt(IDszescianow[1], glm::vec3(-1.5f, 0.0f, 0.0f));
-    Scena.PrzesunObiekt(IDszescianow[2], glm::vec3(0.0f, 1.5f, 0.0f));
-    Scena.PrzesunObiekt(IDszescianow[3], glm::vec3(0.0f, -1.5f, 0.0f));
+    Scena.PrzesunObiekt(IDszescianow, glm::vec3(0.0f, 20.0f, -20.0f));
+    Scena.PrzeskalujObiekt(IDszescianow, glm::vec3(30.0f, 30.0f, 30.0f));
 
 
-    //Scena.DodajTekstureDoObiektu(IDtekstur[0], IDszescianow[2]);
+    //IDNapisu = Scena.DodajNapisDoSceny("Hello", -100, 0, 1, glm::vec3(1.0f, 0.0f, 1.0f));
+    //Scena.DodajNapisDoSceny("Czesc", 0, -48, 2, glm::vec3(1.0f, 0.0f, 1.0f));
 
+    IDKwadratu = Scena.DodajObiekt(Kwadrat, sizeof(Kwadrat), 3, KwadratKolor, sizeof(KwadratKolor), 4, 6);
+
+    RysujUkladWspolrzednych(&Scena);
+
+    IDObiektuOgniwa[0] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDObiektuOgniwa[1] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDObiektuOgniwa[2] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDObiektuOgniwa[3] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDObiektuOgniwa[4] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDObiektuOgniwa[5] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+    IDObiektuOgniwa[6] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
+
+    LanKim.PoliczKinematyke(IDPrzegubow[0]);
+
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[0], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[0]));
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[1], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[1]));
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[2], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[2]));
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[3], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[3]));
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[4], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[4]));
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[5], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[5]));
+    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[6], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[6]));
+
+
+    MacierzPom = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
+
+    IDPrzegubuManipulatora[0] = NowyManipulator.DodajPrzegub(PomPrzegub);
+    IDPrzegubuManipulatora[1] = NowyManipulator.DodajPrzegub(PomPrzegub);
+
+    NowyManipulator.DodajOgniwo(PomOgniwo, IDPrzegubuManipulatora[0], IDPrzegubuManipulatora[1], KolorOgniw1, sizeof(KolorOgniw1));
+    NowyManipulator.DodajKoncoweOgniwo(PomOgniwo, IDPrzegubuManipulatora[1], KolorOgniw1, sizeof(KolorOgniw1));
 
     Scena.ZwrocAdresShadera()->Uzyjprogramu();
 
@@ -761,9 +940,9 @@ int main()
     //tran = glm::translate(tran, glm::vec3(0.0f, 0.0f, -1.0f));
     //tran = glm::rotate(tran, 70.0f, glm::vec3(0.0f, 1.0f, 1.0f));
     //Scena.ZwrocAdresShadera()->PrzekazMacierz4x4("transformacja", tran);
-    //Scena.UstawRzutowanieOrtogonalne(-2.0f, 2.0,-2.0f, 2.0, 0.1, 100.0f);
-    Scena.UstawRzutowaniePerspektywiczne(45, 1, 0.1, 100);
-    Scena.UstawKamere(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    Scena.UstawRzutowanieOrtogonalne(-100.0f, 100.0,-100.0f, 100.0, 0.1f, 150.0f);
+    //Scena.UstawRzutowaniePerspektywiczne(45, 1, 0.1, 100);
+    Scena.UstawKamere(glm::vec3(0.0f, 0.0f, 100.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     //Petla glowna, obsluga zdarzen{
     char petla = 1;
     SDL_Event zdarzenie;
@@ -775,17 +954,11 @@ int main()
         czas_app = czas_app0;
 
         model_obrot_kat += 0.01*delta_czas;
-        skala += 0.01*mnoznik*delta_czas;
 
         if(model_obrot_kat>= 2*M_PI)model_obrot_kat -= 2*M_PI;
-        if(skala <= 0.975 || skala >= 1.025f)mnoznik = -mnoznik;
 
-        Scena.ObrocObiekt(IDszescianow[0], model_obrot_kat, glm::vec3(0.0f, 1.0f, 0.0f));
-        Scena.ObrocObiekt(IDszescianow[1], -model_obrot_kat, glm::vec3(0.0f, 1.0f, 0.0f));
-        Scena.ObrocObiekt(IDszescianow[2], model_obrot_kat, glm::vec3(1.0f, 0.0f, 0.0f));
-        Scena.ObrocObiekt(IDszescianow[3], -model_obrot_kat, glm::vec3(1.0f, 0.0f, 0.0f));
+        Scena.ObrocObiekt(IDszescianow, model_obrot_kat, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        Scena.PrzeskalujObiekt(IDszescianow[0], glm::vec3(skala,skala,skala));
         Scena.Rysuj(GlowneOkno);
 
 
@@ -802,19 +975,61 @@ int main()
                         petla = 0;
                     break;
 
-                    case SDLK_r:
+                    case SDLK_n:
+                        KatF += 0.05;
+                        LanKim.ZmienKonfiguracjePrzegubu(IDPrzegubow[0], KatF);
+                        LanKim.ZmienKonfiguracjePrzegubu(IDPrzegubow[1], -KatF);
+                        LanKim.ZmienKonfiguracjePrzegubu(IDPrzegubow[2], KatF);
+                        LanKim.PoliczKinematyke(IDPrzegubow[0]);
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[0], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[0]));
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[1], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[1]));
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[2], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[2]));
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[3], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[3]));
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[4], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[4]));
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[5], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[5]));
+                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[6], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[6]));
                         Scena.Rysuj(GlowneOkno);
                     break;
 
                     case SDLK_s:
-                        Scena.UstawKamere(Scena.ZwrocPozycjeKamery()+glm::vec3(0.0f,0.0f,0.2f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.UstawKamere(Scena.ZwrocPozycjeKamery()+glm::vec3(0.2f,0.0f,0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                         Scena.Rysuj(GlowneOkno);
                     break;
 
                     case SDLK_w:
+                        Scena.UstawKamere(Scena.ZwrocPozycjeKamery()-glm::vec3(0.2f,0.0f,0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
+                     case SDLK_d:
+                        KatT+=0.05f;
+                        if(KatT >= 2*M_PI) KatT = 0.0f;
+                        Scena.UstawKamere(glm::vec3(100*cos(KatT),100*sin(KatT),0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
+                    case SDLK_a:
+                        KatT-=0.05f;
+                        if(KatT >= 2*M_PI) KatT = 0.0f;
+                        Scena.UstawKamere(glm::vec3(100*cos(KatT),100*sin(KatT),0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
+                    case SDLK_r:
+                        Scena.UstawKamere(Scena.ZwrocPozycjeKamery()+glm::vec3(0.0f,0.0f,0.2f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
+                    case SDLK_f:
                         Scena.UstawKamere(Scena.ZwrocPozycjeKamery()-glm::vec3(0.0f,0.0f,0.2f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
                         Scena.Rysuj(GlowneOkno);
                     break;
+
+                    case SDLK_q:
+                        Scena.UstawKamere(glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
 
                     default:
                     break;

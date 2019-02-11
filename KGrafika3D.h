@@ -7,7 +7,10 @@
 #include <vector>
 #include <SDL.h>
 #include <SOIL.h>
-#include <cstdio>
+#include <map>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #define GLEW_STATIC
 #include <glew.h>
@@ -19,11 +22,14 @@ using namespace std;
 
 class Grafika3D
 {
-    Shader shader;
+    Shader shader, shaderTekstu;
     vector<GLuint> vbo;
     vector<GLuint> vao;
     vector<ObiektNaScenie> ObiektyNaScenie;
+    vector<NapisNaScenie> NapisyNaScenie;
+    map<GLchar, ZnakNaScenie> ZnakiNaScenie;
 
+    GLuint VAOCzcionki, VBOCzcionki;
     glm::vec3 PozycjaKamery; //Pozycja kamery na scenie (wspolrzedne globalne)
     glm::vec3 CelKamery; //Punkt, na ktory "patrzy" kamera
     glm::vec3 OsZKamery; //Wektor wskazujacy kierunek osi wychodzacej z gornej czesci kamery, prostopadly do gornej powierzchni
@@ -39,20 +45,31 @@ class Grafika3D
     GLuint TworzObiekt(GLvoid* WspolnaTablica, size_t RozmiarTablicy, uint8_t IloscWspolrzednychPunktu, uint8_t IloscWspolrzednychKoloru,
                        uint8_t IloscWspolrzednychTekstury);
     GLuint DodajObiektDoSceny(GLuint vaoObiektu, GLuint IloscPunktowWObiekcie);
+    GLuint DodajObiektDoSceny(GLuint vaoObiektu, GLuint IloscPunktowWObiekcie, Graf3D_RodzajObiektu RodzajObiektu);
+
     void UsunObiektZeSceny(GLuint IDObiektu);
     GLuint KopiujObiekt(GLuint IDObiektu);
 
     //***Metoda laczaca tworzenie i dodawanie obiektu na scene
     GLuint DodajObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicyPunktow, uint8_t IloscWspolrzednychPunktu, GLuint IloscPunktowWObiekcie);
+    GLuint DodajObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicyPunktow, uint8_t IloscWspolrzednychPunktu, GLuint IloscPunktowWObiekcie,
+                       Graf3D_RodzajObiektu RodzajObiektu);
+
     GLuint DodajObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicyPunktow, uint8_t IloscWspolrzednychPunktu, GLvoid* TablicaKolorow,
                        size_t RozmiarTablicyKolorow, uint8_t IloscWspolrzednychKoloru, GLuint IloscPunktowWObiekcie);
+    GLuint DodajObiekt(GLvoid* TablicaPunktow, size_t RozmiarTablicyPunktow, uint8_t IloscWspolrzednychPunktu, GLvoid* TablicaKolorow,
+                       size_t RozmiarTablicyKolorow, uint8_t IloscWspolrzednychKoloru, GLuint IloscPunktowWObiekcie, Graf3D_RodzajObiektu RodzajObiektu);
+
     GLuint DodajObiekt(GLvoid* WspolnaTablica, size_t RozmiarTablicy, uint8_t IloscWspolrzednychPunktu, uint8_t IloscWspolrzednychKoloru,
                        uint8_t IloscWspolrzednychTekstury, GLuint IloscPunktowWObiekcie);
+    GLuint DodajObiekt(GLvoid* WspolnaTablica, size_t RozmiarTablicy, uint8_t IloscWspolrzednychPunktu, uint8_t IloscWspolrzednychKoloru,
+                       uint8_t IloscWspolrzednychTekstury, GLuint IloscPunktowWObiekcie, Graf3D_RodzajObiektu RodzajObiektu);
 
     //***Metody Transformacja Obiektu
     void PrzesunObiekt(GLuint IDObiektu, glm::vec3 Przesuniecie);
     void ObrocObiekt(GLuint IDObiektu, GLfloat KatObrotu, glm::vec3 OsObrotu);
     void PrzeskalujObiekt(GLuint IDObiektu, glm::vec3 WektorSkali);
+    void UstawMacierzTransformacji(GLuint IDObiektu, glm::mat4 NowaMacierzTransformacji);
 
     //***Metody Rzutowanie***
     void UstawRzutowanieOrtogonalne(GLfloat Lewa, GLfloat Prawa, GLfloat Dol, GLfloat Gora, GLfloat Przod, GLfloat Tyl);
@@ -68,6 +85,14 @@ class Grafika3D
     GLuint GenerujTeksture2D(const char* NazwaObrazka, GLint ZawijanieTekstury, GLint FiltracjaTekstury);
     void DodajTekstureDoObiektu(GLuint IDTekstury, GLuint IDObiektu);
     void UsunTekstureZObiektu(GLuint IDTekstury, GLuint IDObiektu);
+
+    //***Metody Napisy***
+    void WczytajCzciake(const char* ScierzkaCzcionki, GLuint RozmiarCzcionki,GLuint IloscZnakowDoWczytania, GLuint NumerAtrybutuShadera);
+    void TworzObiektCzcionka(GLuint NumerAtrybutuShadera);
+    void RenderujTekst(SDL_Window* GlowneOkno, string Napis, GLfloat x, GLfloat y, GLfloat Skala, glm::vec3 Kolor);
+    GLuint DodajNapisDoSceny(string Napis, GLfloat x, GLfloat y, GLfloat Skala, glm::vec3 Kolor);
+    void UsunNapisZeSceny(GLuint IDNapisu);
+    void UsunNapisZeSceny(string Napis);
 
     void Rysuj(SDL_Window* GlowneOkno);
 

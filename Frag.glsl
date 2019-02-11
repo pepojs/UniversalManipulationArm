@@ -19,7 +19,7 @@ void main(void)
     }
     else
     {
-        out_Colour = texture(Tekstura0, In.TexturCoord) * In.Colour;
+        out_Colour = texture(Tekstura1, In.TexturCoord) * In.Colour;
 
         if(out_Colour == vec4(0.0f, 0.0f, 0.0f, 1.0f))
             out_Colour = In.Colour;

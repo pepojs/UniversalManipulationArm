@@ -32,6 +32,12 @@
 		</Linker>
 		<Unit filename="KGrafika3D.cpp" />
 		<Unit filename="KGrafika3D.h" />
+		<Unit filename="KLancuchKinematyczny.cpp" />
+		<Unit filename="KLancuchKinematyczny.h" />
+		<Unit filename="KManipulator.cpp" />
+		<Unit filename="KManipulator.h" />
+		<Unit filename="SCzesciManipulatora.cpp" />
+		<Unit filename="SCzesciManipulatora.h" />
 		<Unit filename="SObiektNaScenie.h" />
 		<Unit filename="Shader.cpp" />
 		<Unit filename="Shader.h" />
