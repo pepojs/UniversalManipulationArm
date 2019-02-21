@@ -4,16 +4,19 @@
   | nakładana jest kolejna klasa przeguby uzywajaca przegubu jako         |
   | pole z danymi oraz zawierajaca na przyklad ID i wskazniki na ogniwy   |
   | przylaczone do przegubu, nasepnie kolejna powloka jest lancuch laczy  |
-  | przeguby i ogniwa w jedno doadajac kolejne funkcjie.                  |                                     |
+  | przeguby i ogniwa w jedno doadajac kolejne funkcjie.                  |
   |_______________________________________________________________________|
 */
 
-#ifndef KLANCUCHKINEMATYCZNY_H
-#define KLANCUCHKINEMATYCZNY_H
+#ifndef _KLANCUCHKINEMATYCZNY_H
+#define _KLANCUCHKINEMATYCZNY_H
 
 #include <vector>
 #include <stdint.h>
 #include <iostream>
+#include <iomanip>
+#include <map>
+
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -21,6 +24,7 @@
 #include <glm/gtx/string_cast.hpp>
 
 #include "SCzesciManipulatora.h"
+#include "SOgraniczeniaPrzegubu.h"
 
 using namespace std;
 
@@ -79,7 +83,7 @@ public:
 //Lancuch kinematyczny laczy przeguby i ogniwa w jedna calosc. Dzieki polaczeniu
 //ruch w jednym przegubie moze powodowac zmiane polorzenia innych przegubow i ogniw.
 template <typename TypOgniwa, typename TypPrzegubu>
-class LancuchKinematyczny
+class KLancuchKinematyczny
 {
     vector <Ogniwa<TypOgniwa, TypPrzegubu> > ListaOgniw;
     vector <Przeguby<TypOgniwa, TypPrzegubu> > ListaPrzegubow;
@@ -100,7 +104,14 @@ public:
     void PoliczKinematyke();
     void PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu, uint16_t IDKoncowegoPrzegubu);
     void PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu);
+    uint8_t PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu, map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > Ograniczenia);
+
     glm::mat4 ZwrocTransformacjeOgniwa(uint16_t IDOgniwa);
+    GLfloat ZwrocKonfiguracjePrzegubu(uint16_t IDPrzegubu);
+
+    uint8_t SprawdzOgraniczeniaPrzesZad(glm::mat4 Kinematyka, vector <OgraniczeniePrzestrzeniZadaniowej> Ograniczenia);
+
+    void WyswietlKinematykeKoncowychOgniw();
 
 };
 

@@ -784,8 +784,9 @@ int main()
     GLuint IDszescianow;
     GLuint IDKwadratu;
     GLuint IDtekstur[2];
-    Manipulator<Ogniwo,Przegub> NowyManipulator(&Scena);
-    uint16_t IDPrzegubuManipulatora[2];
+    KManipulator<Ogniwo,Przegub> NowyManipulator(&Scena);
+    uint16_t IDPrzegubuManipulatora[3];
+    string Port = "COM23";
 
     GLfloat KatF = 0.0f, KatT = 0.0f, KatG = 0.0f;
 
@@ -798,14 +799,10 @@ int main()
     czas_app = 0.0;
     delta_czas = 0.0;
 
-    uint16_t IDPrzegubow[5];
-    uint16_t IDOgniw[7];
-    GLuint IDObiektuOgniwa[7];
     glm::mat4 MacierzPom = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
     Przegub PomPrzegub;
     PomPrzegub.TypPrzegubu = PrzegubRotacyjny;
-    PomPrzegub.WartoscKonfiguracji = 0.0f;
     PomPrzegub.KinematykaPrzegubu = glm::mat4(1.0f);
 
     Ogniwo PomOgniwo;
@@ -813,43 +810,15 @@ int main()
     PomOgniwo.RozmiarTablicy = sizeof(PunktyOgniw);
     PomOgniwo.IloscWspolrzednych = 3;
     PomOgniwo.IloscPunktow = 2;
-    PomOgniwo.MacierzRotZ = PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom; //glm::rotate(MacierzPom, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    PomOgniwo.MacierzRotZ = MacierzPom; //glm::rotate(MacierzPom, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
     PomOgniwo.MacierzRotX = glm::mat4(1.0f);
-    PomOgniwo.MacierzTranZ = PomOgniwo.MacierzPoczatkowaTranZ = glm::mat4(1.0f);
+    PomOgniwo.MacierzTranZ = glm::mat4(1.0f);
     PomOgniwo.MacierzTranX = glm::translate(MacierzPom, glm::vec3(15.0f, 0.0f, 0.0f));
 
-
-    LancuchKinematyczny<Ogniwo,Przegub> LanKim;
-    IDPrzegubow[0] = LanKim.DodajPrzegub(PomPrzegub);
-    IDPrzegubow[1] = LanKim.DodajPrzegub(PomPrzegub);
-    IDPrzegubow[2] = LanKim.DodajPrzegub(PomPrzegub);
-    IDPrzegubow[3] = LanKim.DodajPrzegub(PomPrzegub);
-    IDPrzegubow[4] = LanKim.DodajPrzegub(PomPrzegub);
-
-
-    IDOgniw[2] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[1], IDPrzegubow[3]);
-    IDOgniw[3] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[3], IDPrzegubow[4]);
-
-
-    IDOgniw[5] = LanKim.DodajKoncoweOgniwo(PomOgniwo,IDPrzegubow[2]);
-
-    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)M_PI_4, glm::vec3(0.0f, 0.0f, 1.0f));
-    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
-
-    IDOgniw[1] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[0], IDPrzegubow[2]);
-
-    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)(M_PI_2+M_PI_4), glm::vec3(0.0f, 0.0f, 1.0f));
-    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
-
-    IDOgniw[0] = LanKim.DodajOgniwo(PomOgniwo, IDPrzegubow[0], IDPrzegubow[1]);
-
-    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)(-M_PI_2), glm::vec3(0.0f, 0.0f, 1.0f));
-    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
-    IDOgniw[6] = LanKim.DodajKoncoweOgniwo(PomOgniwo,IDPrzegubow[3]);
-
-    MacierzPom = glm::rotate(glm::mat4(1.0f), (float)(M_PI_2), glm::vec3(0.0f, 0.0f, 1.0f));
-    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
-    IDOgniw[4] = LanKim.DodajKoncoweOgniwo(PomOgniwo,IDPrzegubow[2]);
+    OgraniczeniePrzestrzeniZadaniowej PomOgraniczenie;
+    PomOgraniczenie.Dzialanie = DO_WiekszyRowny;
+    PomOgraniczenie.Ograniczenie = TO_OS_Y;
+    PomOgraniczenie.WartoscOgraniczenia = 0;
 
     //GLuint vbo[11], vao[5];
    // Shader shader;
@@ -906,36 +875,35 @@ int main()
 
     RysujUkladWspolrzednych(&Scena);
 
-    IDObiektuOgniwa[0] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-    IDObiektuOgniwa[1] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-    IDObiektuOgniwa[2] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-    IDObiektuOgniwa[3] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-    IDObiektuOgniwa[4] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-    IDObiektuOgniwa[5] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-    IDObiektuOgniwa[6] = Scena.DodajObiekt(PunktyOgniw, sizeof(PunktyOgniw), 3, KolorOgniw, sizeof(KolorOgniw), 4, 2, Graf3D_PolaczonaKrawedz);
-
-    LanKim.PoliczKinematyke(IDPrzegubow[0]);
-
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[0], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[0]));
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[1], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[1]));
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[2], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[2]));
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[3], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[3]));
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[4], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[4]));
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[5], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[5]));
-    Scena.UstawMacierzTransformacji(IDObiektuOgniwa[6], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[6]));
-
-
-    MacierzPom = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-    PomOgniwo.MacierzPoczatkowaRotZ = MacierzPom;
-
+    PomPrzegub.WartoscKonfiguracji = 0.0f;
     IDPrzegubuManipulatora[0] = NowyManipulator.DodajPrzegub(PomPrzegub);
+    PomPrzegub.WartoscKonfiguracji = -200*M_PI/180.0f;
     IDPrzegubuManipulatora[1] = NowyManipulator.DodajPrzegub(PomPrzegub);
+    PomPrzegub.WartoscKonfiguracji = -120*M_PI/180.0f;
+    IDPrzegubuManipulatora[2] = NowyManipulator.DodajPrzegub(PomPrzegub);
 
-    NowyManipulator.DodajOgniwo(PomOgniwo, IDPrzegubuManipulatora[0], IDPrzegubuManipulatora[1], KolorOgniw1, sizeof(KolorOgniw1));
-    NowyManipulator.DodajKoncoweOgniwo(PomOgniwo, IDPrzegubuManipulatora[1], KolorOgniw1, sizeof(KolorOgniw1));
+    PomOgniwo.KonfiguracjaPoczatkowa = M_PI;
+    NowyManipulator.DodajOgniwo(PomOgniwo, IDPrzegubuManipulatora[0], IDPrzegubuManipulatora[1], glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+    PomOgniwo.KonfiguracjaPoczatkowa = 50*M_PI/180.0f;
+    NowyManipulator.DodajOgniwo(PomOgniwo, IDPrzegubuManipulatora[1], IDPrzegubuManipulatora[2], glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+    PomOgniwo.KonfiguracjaPoczatkowa = 90*M_PI/180.0f;
+    NowyManipulator.DodajKoncoweOgniwo(PomOgniwo, IDPrzegubuManipulatora[2], KolorOgniw1, sizeof(KolorOgniw1));
+
+    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[0], 1*M_PI/180, -M_PI, 0, 1);
+    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[1], 1*M_PI/180, -200*M_PI/180.0f, 0, 3);
+    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[2], 1*M_PI/180, -M_PI,0 , 4);
+
+    NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[0], PomOgraniczenie);
+    NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[1], PomOgraniczenie);
+    NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[2], PomOgraniczenie);
+
+    NowyManipulator.WybierzKomunikacje(RodzajKom_COM_UART);
+    NowyManipulator.PodlaczUrzadzenie(Port, 0, 8, 1, 4800);
+
 
     Scena.ZwrocAdresShadera()->Uzyjprogramu();
-
     //glm::mat4 tran = glm::mat4(1.0f);
     //tran = glm::translate(tran, glm::vec3(0.0f, 0.0f, -1.0f));
     //tran = glm::rotate(tran, 70.0f, glm::vec3(0.0f, 1.0f, 1.0f));
@@ -977,17 +945,10 @@ int main()
 
                     case SDLK_n:
                         KatF += 0.05;
-                        LanKim.ZmienKonfiguracjePrzegubu(IDPrzegubow[0], KatF);
-                        LanKim.ZmienKonfiguracjePrzegubu(IDPrzegubow[1], -KatF);
-                        LanKim.ZmienKonfiguracjePrzegubu(IDPrzegubow[2], KatF);
-                        LanKim.PoliczKinematyke(IDPrzegubow[0]);
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[0], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[0]));
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[1], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[1]));
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[2], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[2]));
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[3], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[3]));
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[4], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[4]));
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[5], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[5]));
-                        Scena.UstawMacierzTransformacji(IDObiektuOgniwa[6], LanKim.ZwrocTransformacjeOgniwa(IDOgniw[6]));
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[0], -KatF);
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[1], -200*M_PI/180.0f - KatF);
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[2], -120*M_PI/180.0f + KatF);
+                        //NowyManipulator.WyswietlKinematykeKoncowychOgniw();
                         Scena.Rysuj(GlowneOkno);
                     break;
 
@@ -1030,6 +991,13 @@ int main()
                         Scena.Rysuj(GlowneOkno);
                     break;
 
+                    case SDLK_p:
+                        NowyManipulator.WlaczPrzesylanieKonfiguracji();
+                    break;
+
+                    case SDLK_z:
+                        NowyManipulator.WylaczPrzesylanieKonfiguracji();
+                    break;
 
                     default:
                     break;

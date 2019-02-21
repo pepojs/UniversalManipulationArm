@@ -1,5 +1,5 @@
-#ifndef SCZESCIMANIPULATORA_H
-#define SCZESCIMANIPULATORA_H
+#ifndef _SCZESCIMANIPULATORA_H
+#define _SCZESCIMANIPULATORA_H
 
 #define GLEW_STATIC
 #include <glew.h>
@@ -43,12 +43,14 @@ struct Ogniwo
     glm::mat4 MacierzTranX; //Translacja wzdluz osi X
     glm::mat4 MacierzRotX; //Rotacja wzdluz osi X
 
-    glm::mat4 MacierzPoczatkowaRotZ; //Macierz przechowuje poczatkowa rotacje ogniwa wokol osi Z
-    glm::mat4 MacierzPoczatkowaTranZ; //Macierz przechowuje poczatkowa translacje ogniwa wokol osi Z
+    GLfloat KonfiguracjaPoczatkowa; //Wartosc jaka nalezy dodac do konfiguracji przegubow, wynikajaca z pozycji poczatkowej manipulatora
 
-    Ogniwo(GLvoid* NowaTablicaPunktow, GLuint NowaIloscWspolrzednych, GLuint NowaIloscPunktow, glm::mat4 NowaMacierzRotZ,
-           glm::mat4 NowaMacierzTranZ, glm::mat4 NowaMacierzTranX, glm::mat4 NowaMacierzRotX);
+    Ogniwo(GLvoid* NowaTablicaPunktow, size_t NowyRozmiarTablicy, GLuint NowaIloscWspolrzednych, GLuint NowaIloscPunktow, glm::mat4 NowaMacierzRotZ,
+           glm::mat4 NowaMacierzTranZ, glm::mat4 NowaMacierzTranX, glm::mat4 NowaMacierzRotX, GLfloat NowaKonfiguracjaPoczatkowa);
+    Ogniwo(GLvoid* NowaTablicaPunktow, size_t NowyRozmiarTablicy, GLuint NowaIloscWspolrzednych, GLuint NowaIloscPunktow, GLfloat RotZ, GLfloat TranZ,
+           GLfloat TranX, GLfloat RotX, GLfloat NowaKonfiguracjaPoczatkowa);
     Ogniwo();
-    void ZmienMacierzRotZ(glm::mat4 NowaMacierzRotZ){MacierzRotZ = NowaMacierzRotZ;}
+
+
 };
 #endif // SCZESCIMANIPULATORA_H

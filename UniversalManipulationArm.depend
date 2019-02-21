@@ -59,7 +59,7 @@
 	<glm/gtx/string_cast.hpp>
 	<glew.h>
 
-1549908795 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
+1550751913 source:c:\users\bogdo\documents\programy\universalmanipulationarm\main.cpp
 	<SDL.h>
 	<glew.h>
 	<iostream>
@@ -81,38 +81,72 @@
 	<gtc/matrix_transform.hpp>
 	<gtc/type_ptr.hpp>
 
-1549901096 source:c:\users\bogdo\documents\programy\universalmanipulationarm\klancuchkinematyczny.cpp
+1550751127 source:c:\users\bogdo\documents\programy\universalmanipulationarm\klancuchkinematyczny.cpp
 	"KLancuchKinematyczny.h"
 
-1549891748 c:\users\bogdo\documents\programy\universalmanipulationarm\klancuchkinematyczny.h
+1550749926 c:\users\bogdo\documents\programy\universalmanipulationarm\klancuchkinematyczny.h
 	<vector>
 	<stdint.h>
 	<iostream>
+	<iomanip>
+	<map>
 	<glm.hpp>
 	<gtc/matrix_transform.hpp>
 	<gtc/type_ptr.hpp>
 	<glm/gtx/string_cast.hpp>
 	"SCzesciManipulatora.h"
+	"SOgraniczeniaPrzegubu.h"
 
-1549908684 c:\users\bogdo\documents\programy\universalmanipulationarm\sczescimanipulatora.h
+1550400258 c:\users\bogdo\documents\programy\universalmanipulationarm\sczescimanipulatora.h
 	<glew.h>
 	<glm.hpp>
 	<gtc/matrix_transform.hpp>
 	<gtc/type_ptr.hpp>
 
-1549895908 source:c:\users\bogdo\documents\programy\universalmanipulationarm\sczescimanipulatora.cpp
+1550142792 source:c:\users\bogdo\documents\programy\universalmanipulationarm\sczescimanipulatora.cpp
 	"SCzesciManipulatora.h"
 
-1549908861 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kmanipulator.cpp
+1550751127 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kmanipulator.cpp
 	"KManipulator.h"
 
-1549908795 c:\users\bogdo\documents\programy\universalmanipulationarm\kmanipulator.h
+1550745768 c:\users\bogdo\documents\programy\universalmanipulationarm\kmanipulator.h
 	<iostream>
 	<vector>
+	<map>
+	<cmath>
 	<glm.hpp>
 	<gtc/matrix_transform.hpp>
 	<gtc/type_ptr.hpp>
 	<glm/gtx/string_cast.hpp>
 	"KGrafika3D.h"
 	"KLancuchKinematyczny.h"
+	"KKomunikacja.h"
+	"SOgraniczeniaPrzegubu.h"
+
+1550403604 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kwinportcom.cpp
+	"KWinPortCom.h"
+
+1550405561 c:\users\bogdo\documents\programy\universalmanipulationarm\kwinportcom.h
+	<iostream>
+	<windows.h>
+	<string>
+	<cstring>
+
+1550752502 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kkomunikacja.cpp
+	"KKomunikacja.h"
+
+1550413122 c:\users\bogdo\documents\programy\universalmanipulationarm\kkomunikacja.h
+	<string>
+	"KWinPortCom.h"
+
+1550745834 c:\users\bogdo\documents\programy\universalmanipulationarm\sograniczeniaprzegubu.h
+	<iostream>
+	<glew.h>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	<glm/gtx/string_cast.hpp>
+
+1550745737 source:c:\users\bogdo\documents\programy\universalmanipulationarm\sograniczeniaprzegubu.cpp
+	"SOgraniczeniaPrzegubu.h"
 

@@ -32,10 +32,14 @@
 		</Linker>
 		<Unit filename="KGrafika3D.cpp" />
 		<Unit filename="KGrafika3D.h" />
+		<Unit filename="KKomunikacja.cpp" />
+		<Unit filename="KKomunikacja.h" />
 		<Unit filename="KLancuchKinematyczny.cpp" />
 		<Unit filename="KLancuchKinematyczny.h" />
 		<Unit filename="KManipulator.cpp" />
 		<Unit filename="KManipulator.h" />
+		<Unit filename="KWinPortCom.cpp" />
+		<Unit filename="KWinPortCom.h" />
 		<Unit filename="SCzesciManipulatora.cpp" />
 		<Unit filename="SCzesciManipulatora.h" />
 		<Unit filename="SObiektNaScenie.h" />
