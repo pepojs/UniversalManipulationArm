@@ -43,6 +43,8 @@
 		<Unit filename="SCzesciManipulatora.cpp" />
 		<Unit filename="SCzesciManipulatora.h" />
 		<Unit filename="SObiektNaScenie.h" />
+		<Unit filename="SOgraniczeniaPrzegubu.cpp" />
+		<Unit filename="SOgraniczeniaPrzegubu.h" />
 		<Unit filename="Shader.cpp" />
 		<Unit filename="Shader.h" />
 		<Unit filename="main.cpp" />

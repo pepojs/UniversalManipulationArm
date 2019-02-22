@@ -63,7 +63,7 @@ void KKomunikacjaMan01::WysliDane(char* Buf, DWORD Ile)
 
 void KKomunikacjaMan01::WysliDane(uint16_t NumerPrzegubu, uint16_t Kat)
 {
-    char Buf[2];
+    char Buf[3];
 
     if(NumerPrzegubu > 255)
     {
@@ -79,11 +79,11 @@ void KKomunikacjaMan01::WysliDane(uint16_t NumerPrzegubu, uint16_t Kat)
 
     Buf[0] = (uint8_t)NumerPrzegubu;
     Buf[1] = (uint8_t)Kat;
-
+    Buf[2] = 13;
     cout<<"Buf: "<<(int)Buf[0]<<" ,"<<(uint8_t)Buf[1]<<endl;
     if(TypKomunikacji == RodzajKom_COM_UART)
     {
-        ((KWinPortCOM*)ObiektKomunikacji)->Wysli(Buf, 2);
+        ((KWinPortCOM*)ObiektKomunikacji)->Wysli(Buf, 3);
 
     }else if(TypKomunikacji == RodzajKom_NieWybrano)
     {

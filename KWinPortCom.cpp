@@ -63,6 +63,7 @@ int KWinPortCOM::Start(std::string& Port, int Parzystosc, int Rozmiar, int Stopb
     else
     {
         std::cout << "NIE udalo sie \n";
+        std::cout << "SetCommState blad: "<< GetLastError() <<std::endl;
         this->Polaczony = "";
         CancelIo(hCOM);
         CloseHandle(hCOM);

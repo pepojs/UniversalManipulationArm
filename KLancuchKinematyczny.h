@@ -21,7 +21,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
+#include <gtx/string_cast.hpp>
 
 #include "SCzesciManipulatora.h"
 #include "SOgraniczeniaPrzegubu.h"

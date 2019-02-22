@@ -786,7 +786,7 @@ int main()
     GLuint IDtekstur[2];
     KManipulator<Ogniwo,Przegub> NowyManipulator(&Scena);
     uint16_t IDPrzegubuManipulatora[3];
-    string Port = "COM23";
+    string Port = "\\\\.\\COM22";
 
     GLfloat KatF = 0.0f, KatT = 0.0f, KatG = 0.0f;
 
@@ -891,16 +891,16 @@ int main()
     PomOgniwo.KonfiguracjaPoczatkowa = 90*M_PI/180.0f;
     NowyManipulator.DodajKoncoweOgniwo(PomOgniwo, IDPrzegubuManipulatora[2], KolorOgniw1, sizeof(KolorOgniw1));
 
-    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[0], 1*M_PI/180, -M_PI, 0, 1);
-    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[1], 1*M_PI/180, -200*M_PI/180.0f, 0, 3);
-    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[2], 1*M_PI/180, -M_PI,0 , 4);
+    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[0], 1*M_PI/180, -M_PI, -0.01f, 2);
+    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[1], 1*M_PI/180, -200*M_PI/180.0f, 0, 4);
+    NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[2], 1*M_PI/180, -M_PI,0 , 5);
 
     NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[0], PomOgraniczenie);
     NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[1], PomOgraniczenie);
     NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[2], PomOgraniczenie);
 
     NowyManipulator.WybierzKomunikacje(RodzajKom_COM_UART);
-    NowyManipulator.PodlaczUrzadzenie(Port, 0, 8, 1, 4800);
+    NowyManipulator.PodlaczUrzadzenie(Port,NOPARITY , 8, ONESTOPBIT, CBR_4800);
 
 
     Scena.ZwrocAdresShadera()->Uzyjprogramu();
@@ -943,8 +943,25 @@ int main()
                         petla = 0;
                     break;
 
+                    case SDLK_b:
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[0], -0.05f);
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[1], -200*M_PI/180.0f);
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[2], -120*M_PI/180.0f);
+                        Scena.Rysuj(GlowneOkno);
+                        KatF = 0.0f;
+                    break;
+
                     case SDLK_n:
                         KatF += 0.05;
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[0], -KatF);
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[1], -200*M_PI/180.0f - KatF);
+                        NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[2], -120*M_PI/180.0f + KatF);
+                        //NowyManipulator.WyswietlKinematykeKoncowychOgniw();
+                        Scena.Rysuj(GlowneOkno);
+                    break;
+
+                    case SDLK_m:
+                        KatF -= 0.05;
                         NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[0], -KatF);
                         NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[1], -200*M_PI/180.0f - KatF);
                         NowyManipulator.ZmienKonfiguracjePrzegubu(IDPrzegubuManipulatora[2], -120*M_PI/180.0f + KatF);

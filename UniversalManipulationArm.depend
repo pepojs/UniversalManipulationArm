@@ -1,34 +1,47 @@
 # depslib dependency file v1.0
-1533224320 source:c:\users\piotr\documents\usp\universalmanipulationarm\shader.cpp
+1548715032 source:c:\users\piotr\documents\usp\universalmanipulationarm\shader.cpp
 	"Shader.h"
 
-1533216539 c:\users\piotr\documents\usp\universalmanipulationarm\shader.h
+1550756085 c:\users\piotr\documents\usp\universalmanipulationarm\shader.h
 	<iostream>
 	<fstream>
 	<string>
 	<sstream>
 	<vector>
 	<cstdio>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	<gtx/string_cast.hpp>
 	<glew.h>
 
-1546536456 source:c:\users\piotr\documents\usp\universalmanipulationarm\main.cpp
+1550845811 source:c:\users\piotr\documents\usp\universalmanipulationarm\main.cpp
 	<SDL.h>
 	<glew.h>
 	<iostream>
 	<ctime>
 	"KGrafika3D.h"
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	"KLancuchKinematyczny.h"
+	"KManipulator.h"
 
-1546536866 source:c:\users\piotr\documents\usp\universalmanipulationarm\kgrafika3d.cpp
+1550754672 source:c:\users\piotr\documents\usp\universalmanipulationarm\kgrafika3d.cpp
 	"KGrafika3D.h"
 
-1546536700 c:\users\piotr\documents\usp\universalmanipulationarm\kgrafika3d.h
+1550754672 c:\users\piotr\documents\usp\universalmanipulationarm\kgrafika3d.h
 	<iostream>
 	<string>
 	<cstdio>
 	<vector>
 	<SDL.h>
+	<SOIL.h>
+	<map>
+	<ft2build.h>
 	<glew.h>
 	"Shader.h"
+	"SObiektNaScenie.h"
 
 1549902367 source:c:\users\bogdo\documents\programy\universalmanipulationarm\kgrafika3d.cpp
 	"KGrafika3D.h"
@@ -148,5 +161,81 @@
 	<glm/gtx/string_cast.hpp>
 
 1550745737 source:c:\users\bogdo\documents\programy\universalmanipulationarm\sograniczeniaprzegubu.cpp
+	"SOgraniczeniaPrzegubu.h"
+
+1550754673 c:\users\piotr\documents\usp\universalmanipulationarm\sobiektnascenie.h
+	<vector>
+	<string>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+
+1550769344 source:c:\users\piotr\documents\usp\universalmanipulationarm\kkomunikacja.cpp
+	"KKomunikacja.h"
+
+1550754672 c:\users\piotr\documents\usp\universalmanipulationarm\kkomunikacja.h
+	<string>
+	"KWinPortCom.h"
+
+1550754672 c:\users\piotr\documents\usp\universalmanipulationarm\kwinportcom.h
+	<iostream>
+	<windows.h>
+	<string>
+	<cstring>
+
+1550754672 source:c:\users\piotr\documents\usp\universalmanipulationarm\klancuchkinematyczny.cpp
+	"KLancuchKinematyczny.h"
+
+1550758565 c:\users\piotr\documents\usp\universalmanipulationarm\klancuchkinematyczny.h
+	<vector>
+	<stdint.h>
+	<iostream>
+	<iomanip>
+	<map>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	<gtx/string_cast.hpp>
+	"SCzesciManipulatora.h"
+	"SOgraniczeniaPrzegubu.h"
+
+1550754673 c:\users\piotr\documents\usp\universalmanipulationarm\sczescimanipulatora.h
+	<glew.h>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+
+1550758586 c:\users\piotr\documents\usp\universalmanipulationarm\sograniczeniaprzegubu.h
+	<iostream>
+	<glew.h>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	<gtx/string_cast.hpp>
+
+1550754672 source:c:\users\piotr\documents\usp\universalmanipulationarm\kmanipulator.cpp
+	"KManipulator.h"
+
+1550758565 c:\users\piotr\documents\usp\universalmanipulationarm\kmanipulator.h
+	<iostream>
+	<vector>
+	<map>
+	<cmath>
+	<glm.hpp>
+	<gtc/matrix_transform.hpp>
+	<gtc/type_ptr.hpp>
+	<gtx/string_cast.hpp>
+	"KGrafika3D.h"
+	"KLancuchKinematyczny.h"
+	"KKomunikacja.h"
+	"SOgraniczeniaPrzegubu.h"
+
+1550844557 source:c:\users\piotr\documents\usp\universalmanipulationarm\kwinportcom.cpp
+	"KWinPortCom.h"
+
+1550754672 source:c:\users\piotr\documents\usp\universalmanipulationarm\sczescimanipulatora.cpp
+	"SCzesciManipulatora.h"
+
+1550754673 source:c:\users\piotr\documents\usp\universalmanipulationarm\sograniczeniaprzegubu.cpp
 	"SOgraniczeniaPrzegubu.h"
 
