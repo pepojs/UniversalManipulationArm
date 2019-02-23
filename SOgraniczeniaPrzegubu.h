@@ -36,6 +36,12 @@ struct IdentyfikatorOgniwa
     GLuint IDObiektuOgniwa;
 };
 
+struct IdentyfikatorChwytaka
+{
+    uint16_t IDChwytaka;
+    GLuint IDObiektuChwytaka;
+};
+
 struct OgraniczeniaPrzegubow
 {
     GLfloat RozdzielczoscSilnika;

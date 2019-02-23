@@ -784,8 +784,9 @@ int main()
     GLuint IDszescianow;
     GLuint IDKwadratu;
     GLuint IDtekstur[2];
-    KManipulator<Ogniwo,Przegub> NowyManipulator(&Scena);
+    KManipulator<Ogniwo, Chwytak, Przegub> NowyManipulator(&Scena);
     uint16_t IDPrzegubuManipulatora[3];
+    uint16_t IDChwytakaManipulatora;
     string Port = "\\\\.\\COM22";
 
     GLfloat KatF = 0.0f, KatT = 0.0f, KatG = 0.0f;
@@ -820,6 +821,15 @@ int main()
     PomOgraniczenie.Ograniczenie = TO_OS_Y;
     PomOgraniczenie.WartoscOgraniczenia = 0;
 
+    Chwytak PomChwytak;
+    PomChwytak.TablicaPunktow = PunktyOgniw;
+    PomChwytak.RozmiarTablicy = sizeof(PunktyOgniw);
+    PomChwytak.IloscWspolrzednych = 3;
+    PomChwytak.IloscPunktow = 2;
+    PomChwytak.MacierzRotZ = MacierzPom; //glm::rotate(MacierzPom, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    PomChwytak.MacierzRotX = glm::mat4(1.0f);
+    PomChwytak.MacierzTranZ = glm::mat4(1.0f);
+    PomChwytak.MacierzTranX = glm::translate(MacierzPom, glm::vec3(15.0f, 0.0f, 0.0f));
     //GLuint vbo[11], vao[5];
    // Shader shader;
    // Joint tempJ;
@@ -888,16 +898,20 @@ int main()
     PomOgniwo.KonfiguracjaPoczatkowa = 50*M_PI/180.0f;
     NowyManipulator.DodajOgniwo(PomOgniwo, IDPrzegubuManipulatora[1], IDPrzegubuManipulatora[2], glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
-    PomOgniwo.KonfiguracjaPoczatkowa = 90*M_PI/180.0f;
-    NowyManipulator.DodajKoncoweOgniwo(PomOgniwo, IDPrzegubuManipulatora[2], KolorOgniw1, sizeof(KolorOgniw1));
+    PomChwytak.KonfiguracjaPoczatkowa = 90*M_PI/180.0f;
+    PomChwytak.KinematykaChwytaka = glm::mat4(1.0f);
+    IDChwytakaManipulatora = NowyManipulator.DodajChwytak(PomChwytak, IDPrzegubuManipulatora[2], KolorOgniw1, sizeof(KolorOgniw1));
 
     NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[0], 1*M_PI/180, -M_PI, -0.01f, 2);
     NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[1], 1*M_PI/180, -200*M_PI/180.0f, 0, 4);
     NowyManipulator.DodajOgraniczeniePrzegubu(IDPrzegubuManipulatora[2], 1*M_PI/180, -M_PI,0 , 5);
 
-    NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[0], PomOgraniczenie);
-    NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[1], PomOgraniczenie);
-    NowyManipulator.DodajOgranizczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[2], PomOgraniczenie);
+    NowyManipulator.DodajOgraniczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[0], PomOgraniczenie);
+    NowyManipulator.DodajOgraniczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[1], PomOgraniczenie);
+    NowyManipulator.DodajOgraniczeniePrzesZadPrzegubu(IDPrzegubuManipulatora[2], PomOgraniczenie);
+
+    PomOgraniczenie.WartoscOgraniczenia = -5;
+    NowyManipulator.DodajOgraniczeniePrzesZadChwytaka(IDChwytakaManipulatora, PomOgraniczenie);
 
     NowyManipulator.WybierzKomunikacje(RodzajKom_COM_UART);
     NowyManipulator.PodlaczUrzadzenie(Port,NOPARITY , 8, ONESTOPBIT, CBR_4800);

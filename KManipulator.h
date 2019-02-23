@@ -18,17 +18,19 @@
 #include "SOgraniczeniaPrzegubu.h"
 
 
-template <typename TypOgniwa, typename TypPrzegubu>
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
 class KManipulator
 {
     Grafika3D* Scena;
-    KLancuchKinematyczny<TypOgniwa,TypPrzegubu> LancuchManipulatora;
+    KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu> LancuchManipulatora;
     KKomunikacjaMan01 Komunikacja;
     uint8_t PrzesylajKonfiguracje;
 
     vector <IdentyfikatorOgniwa> IDOgniw;
+    vector <IdentyfikatorChwytaka> IDChwytakow;
     map <uint16_t, OgraniczeniaPrzegubow> Ograniczenia;
-    map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > OgraniczeniaPrzestrzenZad;
+    map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > OgraniczeniaPrzestrzenZadPrze;
+    map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > OgraniczeniaPrzestrzenZadChwytaka;
 
 public:
 
@@ -48,11 +50,17 @@ public:
     void DodajKoncoweOgniwo(GLvoid* TablicaPunktow, size_t RozmiarTablicy, GLuint IloscWspolrzednych, GLuint IloscPunktow, GLfloat RotZ, GLfloat TranZ,
                             GLfloat TranX, GLfloat RotX, GLfloat KonfiguracjaPoczatkowa, uint16_t IDKoncowegoPrzegubu, glm::vec4 KolorOgniwa);
 
+    uint16_t DodajChwytak(TypChwytaka DaneChwytaka, uint16_t IDPoczatkowegoPrzegubu, GLvoid* TablicaKolorow, size_t RozmiarTablicy);
+    uint16_t DodajChwytak(TypChwytaka DaneChwytaka, uint16_t IDPoczatkowegoPrzegubu, glm::vec4 KolorChwytaka);
+    uint16_t DodajChwytak(GLvoid* TablicaPunktow, size_t RozmiarTablicy, GLuint IloscWspolrzednych, GLuint IloscPunktow, GLfloat RotZ, GLfloat TranZ,
+                            GLfloat TranX, GLfloat RotX, GLfloat KonfiguracjaPoczatkowa, uint16_t IDKoncowegoPrzegubu, glm::vec4 KolorChwytaka);
+
     uint16_t DodajPrzegub(TypPrzegubu NowyPrzegub);
 
     void DodajOgraniczeniePrzegubu(uint16_t IDPrzegubu, OgraniczeniaPrzegubow Ograniczenie);
     void DodajOgraniczeniePrzegubu(uint16_t IDPrzegubu, GLfloat Rozdzielczosc, GLfloat MinmalnyKat, GLfloat MaksymalnyKat, uint16_t NumerPrzegubu);
-    void DodajOgranizczeniePrzesZadPrzegubu(uint16_t IDPrzegubu, OgraniczeniePrzestrzeniZadaniowej Ograniczenie);
+    void DodajOgraniczeniePrzesZadPrzegubu(uint16_t IDPrzegubu, OgraniczeniePrzestrzeniZadaniowej Ograniczenie);
+    void DodajOgraniczeniePrzesZadChwytaka(uint16_t IDChwytaka, OgraniczeniePrzestrzeniZadaniowej Ograniczenie);
 
     void ZmienKonfiguracjePrzegubu(uint16_t IDPrzegubu, GLfloat NowaKonfiguracja);
 

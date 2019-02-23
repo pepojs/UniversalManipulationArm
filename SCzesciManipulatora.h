@@ -53,4 +53,31 @@ struct Ogniwo
 
 
 };
+
+struct Chwytak
+{
+    GLvoid* TablicaPunktow; //Tablica zawierajaca punkty ogniwa do rysowania
+    size_t RozmiarTablicy; //Rozmiar tablicy potrzebny do narysowania ogniwa
+    GLuint IloscWspolrzednych; //Ilosc wspolrzednych przypadajacych na jeden punkt
+    GLuint IloscPunktow; //Ilosc punktow, z ktorych sklada sie ogniwo
+
+    //Macierze przeksztalcen zgodne z noacja Denavita-Hartenberga
+    //A = RotZ * TransZ * TransX * RotX
+    glm::mat4 MacierzRotZ; //Rotacja wokol osi Z
+    glm::mat4 MacierzTranZ; //Translacja wzdluz osi Z
+    glm::mat4 MacierzTranX; //Translacja wzdluz osi X
+    glm::mat4 MacierzRotX; //Rotacja wzdluz osi X
+
+    glm::mat4 KinematykaChwytaka; //Macierz przeksztalceni z ukladu bazowego do ukladu punktu wyznaczajacego punkt "pracy" chwytaka
+                                  //(punkt miedzy palcami chwytaka, koncowka pistoletu malarskiego itp)
+
+    GLfloat KonfiguracjaPoczatkowa; //Wartosc jaka nalezy dodac do konfiguracji przegubow, wynikajaca z pozycji poczatkowej manipulatora
+
+    Chwytak(GLvoid* NowaTablicaPunktow, size_t NowyRozmiarTablicy, GLuint NowaIloscWspolrzednych, GLuint NowaIloscPunktow, glm::mat4 NowaMacierzRotZ,
+           glm::mat4 NowaMacierzTranZ, glm::mat4 NowaMacierzTranX, glm::mat4 NowaMacierzRotX, GLfloat NowaKonfiguracjaPoczatkowa, glm::mat4 NowaKinematykaChwytaka);
+    Chwytak(GLvoid* NowaTablicaPunktow, size_t NowyRozmiarTablicy, GLuint NowaIloscWspolrzednych, GLuint NowaIloscPunktow, GLfloat RotZ, GLfloat TranZ,
+           GLfloat TranX, GLfloat RotX, GLfloat NowaKonfiguracjaPoczatkowa, glm::mat4 NowaKinematykaChwytaka);
+    Chwytak();
+};
+
 #endif // SCZESCIMANIPULATORA_H

@@ -4,8 +4,8 @@
 //Metoda pozwalajaca dodac do lancucha ogniwo zakonczone z obydwoch koncow przegubem
 //Argumentami sa wypelniona struktura danymi o ogniwie, identyfikator przegubu na poczatku ogniwa oraz
 //identyfikator przegubu konczacego ogniwo, zwraca identyfikator na nowe ogniwo
-template <typename TypOgniwa, typename TypPrzegubu>
-uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajOgniwo(TypOgniwa DaneOgniwa, uint16_t IDPoczatkowegoPrzegubu, uint16_t IDKoncowegoPrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint16_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::DodajOgniwo(TypOgniwa DaneOgniwa, uint16_t IDPoczatkowegoPrzegubu, uint16_t IDKoncowegoPrzegubu)
 {
     Ogniwa<TypOgniwa, TypPrzegubu> NoweOgniwo; //Tworzymy ogniwo pomocnicze
 
@@ -61,8 +61,8 @@ uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajOgniwo(TypOgniwa Dan
 //Metoda pozwalajaca dodac do lancucha ogniwo, ktore zaczyna lancuch, nie posiada przegubu na poczatku
 //(moze to byc baza manipulatora). Argumentami sa wypelniona struktura danymi o ogniwie
 //i identyfikator przegubu na koncu ogniwa, zwraca identyfikaor na nowe ogniwo.
-template <typename TypOgniwa, typename TypPrzegubu>
-uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajPoczatkoweOgniwo(TypOgniwa DaneOgniwa, uint16_t IDKoncowegoPrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint16_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::DodajPoczatkoweOgniwo(TypOgniwa DaneOgniwa, uint16_t IDKoncowegoPrzegubu)
 {
     Ogniwa<TypOgniwa, TypPrzegubu> NoweOgniwo; //Tworzymy ogniwo pomocnicze
 
@@ -107,8 +107,8 @@ uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajPoczatkoweOgniwo(Typ
 //Metoda pozwalajaca dodac do lancucha ogniwo, ktore konczy lancuch, nie posiada przegubu na koncu
 //(moze to byc chwytak manipulatora). Argumentami sa wypelniona struktura danymi o ogniwie
 //i identyfikator przegubu na poczatku ogniwa, zwraca identyfikaor na nowe ogniwo.
-template <typename TypOgniwa, typename TypPrzegubu>
-uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajKoncoweOgniwo(TypOgniwa DaneOgniwa, uint16_t IDPoczatkowegoPrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint16_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::DodajKoncoweOgniwo(TypOgniwa DaneOgniwa, uint16_t IDPoczatkowegoPrzegubu)
 {
     Ogniwa<TypOgniwa, TypPrzegubu> NoweOgniwo; //Tworzymy ogniwo pomocnicze
 
@@ -150,12 +150,56 @@ uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajKoncoweOgniwo(TypOgn
     return NoweOgniwo.ZwrocIDOgniwa();
 }
 
+//Metoda pozwala dodac do lancucha chwytak. Argumentami sa wypelniona struktura danymi o chwytaku
+//i identyfikator przegubu na poczatku chwytaka, zwraca identyfikaor na nowy chwytak.
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint16_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::DodajChwytak(TypChwytaka DaneChwytaka, uint16_t IDPoczatkowegoPrzegubu)
+{
+    Chwytaki<TypChwytaka, TypPrzegubu> NoweChwytak; //Tworzymy chwytak pomocnicze
+
+    //Wypelnia pomocniczy obiekt
+    NoweChwytak.ZmienWskNaPoczatkowyPrzegub(NULL);
+    NoweChwytak.ZmienDaneChwytaka(DaneChwytaka);
+
+    //Jezeli nie ma jeszcze chwytaka w lancuchu to nowy chwytak ma identyfikator 0, inaczej nadaje ID + 1 niz ostatnie chwytak
+    if(ListaChwytakow.empty())
+        NoweChwytak.ZmienIDChwytaka(0);
+    else
+        NoweChwytak.ZmienIDChwytaka(ListaChwytakow[ListaChwytakow.size()-1].ZwrocIDChwytaka() + 1);
+
+
+    //Przeszukuje liste przegubuw i dodaje wskazniki na odpowiednie przeguby
+    for(size_t i = 0; i < ListaPrzegubow.size(); i++)
+    {
+
+        if(ListaPrzegubow[i].ZwrocIDPrzegubu() == IDPoczatkowegoPrzegubu)
+        {
+            NoweChwytak.ZmienWskNaPoczatkowyPrzegub(&ListaPrzegubow[i]);
+            break;
+        }
+    }
+
+    //Jezeli nie znaleziono, ktoregos z przegubow wypisujemy odpowiedni komunikat
+    if(NoweChwytak.ZwrocWskPoczatkowegoPrzegubu() == NULL)
+    {
+        cerr<<"Nie istnieje przegub o ID: "<<IDPoczatkowegoPrzegubu<<endl;
+        return 0;
+    }
+
+    //Dodajemy chwytak do listy w lancuchu i dodajemy w przegubie chwytak jako podlaczone do przegubu
+    ListaChwytakow.push_back(NoweChwytak);
+    NoweChwytak.ZwrocWskPoczatkowegoPrzegubu()->DodajPodlaczonyChwytak(ListaChwytakow.back().ZwrocIDChwytaka());
+
+    //Zwracamy ID ogniwa
+    return NoweChwytak.ZwrocIDChwytaka();
+}
+
 //Metoda pozwalajaca dodac do lancucha przegub. Argumente jest wypelniona struktura danymi o przegubie,
 //zwraca identyfikaor na nowe przegub.
-template <typename TypOgniwa, typename TypPrzegubu>
-uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajPrzegub(TypPrzegubu DanePrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint16_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::DodajPrzegub(TypPrzegubu DanePrzegubu)
 {
-    Przeguby<TypOgniwa, TypPrzegubu> NowePrzegub; //Tworzymy przegub pomocnicze
+    Przeguby<TypPrzegubu> NowePrzegub; //Tworzymy przegub pomocnicze
 
     //Zapisuje dane w nowym obiekcie
     NowePrzegub.ZmienDanePrzegubu(DanePrzegubu);
@@ -175,8 +219,8 @@ uint16_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::DodajPrzegub(TypPrzegubu 
 
 //Metoda pozwala zmienic konfiguracje przegubu (na przyklad kat pod jaki jest obrocony przegub)
 //Argumentami sa identyfikator przegubu oraz nowa wartosc konfiguracji
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienKonfiguracjePrzegubu(uint16_t IDPrzegubu, GLfloat NowaKonfiguracja)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZmienKonfiguracjePrzegubu(uint16_t IDPrzegubu, GLfloat NowaKonfiguracja)
 {
     size_t i;
     for(i = 0; i < ListaPrzegubow.size(); i++)
@@ -194,8 +238,8 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienKonfiguracjePrzegubu(uin
     ListaPrzegubow[i].ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji = NowaKonfiguracja;
 }
 
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienKinematykePrzegubu(uint16_t IDPrzegubu, glm::mat4 NowaKinematykaPrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZmienKinematykePrzegubu(uint16_t IDPrzegubu, glm::mat4 NowaKinematykaPrzegubu)
 {
     size_t i;
     for(i = 0; i < ListaPrzegubow.size(); i++)
@@ -213,8 +257,8 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienKinematykePrzegubu(uint1
     ListaPrzegubow[i].ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu = NowaKinematykaPrzegubu;
 }
 
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienMacierzRotZOgniwa(uint16_t IDOgniwa, glm::mat4 NowaMacierzRotZ)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZmienMacierzRotZOgniwa(uint16_t IDOgniwa, glm::mat4 NowaMacierzRotZ)
 {
     size_t i;
     for(i = 0; i < ListaOgniw.size(); i++)
@@ -233,8 +277,8 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienMacierzRotZOgniwa(uint16
 }
 
 
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienMacierzTranZOgniwa(uint16_t IDOgniwa, glm::mat4 NowaMacierzTranZ)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZmienMacierzTranZOgniwa(uint16_t IDOgniwa, glm::mat4 NowaMacierzTranZ)
 {
     size_t i;
     for(i = 0; i < ListaOgniw.size(); i++)
@@ -254,8 +298,8 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZmienMacierzTranZOgniwa(uint1
 
 //Metoda pozwala policzyc kolejne macierze kinematyki w przegubach oraz macierze rotacji lub translacji osi Z ogniw.
 //Nalezy ja wywolac po stworzeniu lancucha kinematycznego, jak rownierz przy kazdej zmianie konfiguracji przegubow.
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke()
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::PoliczKinematyke()
 {
     size_t i;
     size_t k;
@@ -329,6 +373,25 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke()
                 }
             }
         }
+
+        for(size_t j = 0; j < ListaPrzegubow[i].ZwrocIloscChwytakow(); j++)
+        {
+            //Petla wyszukujaca z listy chwytakow, chwytak o ID rownym temu znajdujacemu sie na liscie chwytakow podlaczonych do przegubu
+            for(k = 0; k < ListaChwytakow.size(); k++)
+            {
+                if(ListaChwytakow[k].ZwrocIDChwytaka() == ListaPrzegubow[i].ZwrocIDPodlaczonegoChwytaka(j))
+                    break;
+            }
+
+            //Dla odpowiedniego rodzaju przegubu modyfikuje odpowiednia macierz
+            if(ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->TypPrzegubu == PrzegubRotacyjny)
+                ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ = glm::rotate(glm::mat4(1.0f), ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji, glm::vec3(0.0f, 0.0f, 1.0f));
+            else
+                ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji));
+
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KinematykaChwytaka = ListaPrzegubow[i].ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ *
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranX * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotX;
+        }
     }
 
 }
@@ -336,8 +399,8 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke()
 //Metoda pozwala policzyc kolejne macierze kinematyki w przegubach od przegubu o identyfikatorze podanym jako IDPoczatkowegoPrzegubu
 //aż do przegubu o identyfikatorze IDKoncowegoPrzegubu włącznie z nim oraz macierze rotacji lub translacji osi Z ogniw z nimi polaczonych.
 //Nalezy ja wywolac po stworzeniu lancucha kinematycznego, jak rownierz przy kazdej zmianie konfiguracji przegubow.
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu, uint16_t IDKoncowegoPrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu, uint16_t IDKoncowegoPrzegubu)
 {
     size_t i;
     size_t k;
@@ -411,6 +474,25 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDP
                 }
             }
         }
+
+        for(size_t j = 0; j < ListaPrzegubow[i].ZwrocIloscChwytakow(); j++)
+        {
+            //Petla wyszukujaca z listy chwytakow, chwytak o ID rownym temu znajdujacemu sie na liscie chwytakow podlaczonych do przegubu
+            for(k = 0; k < ListaChwytakow.size(); k++)
+            {
+                if(ListaChwytakow[k].ZwrocIDChwytaka() == ListaPrzegubow[i].ZwrocIDPodlaczonegoChwytaka(j))
+                    break;
+            }
+
+            //Dla odpowiedniego rodzaju przegubu modyfikuje odpowiednia macierz
+            if(ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->TypPrzegubu == PrzegubRotacyjny)
+                ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ = glm::rotate(glm::mat4(1.0f), ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji, glm::vec3(0.0f, 0.0f, 1.0f));
+            else
+                ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji));
+
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KinematykaChwytaka = ListaPrzegubow[i].ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ *
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranX * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotX;
+        }
     }
 
 }
@@ -418,8 +500,8 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDP
 //Metoda pozwala policzyc kolejne macierze kinematyki w przegubach od przegubu o identyfikatorze podanym jako IDPoczatkowegoPrzegubu
 //aż do konca lancucha w gore oraz macierze rotacji lub translacji osi Z ogniw z nimi polaczonych.
 //Nalezy ja wywolac po stworzeniu lancucha kinematycznego, jak rownierz przy kazdej zmianie konfiguracji przegubow.
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu)
 {
     size_t i;
     size_t k;
@@ -428,6 +510,31 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDP
     {
         if(ListaPrzegubow[i].ZwrocIDPrzegubu() == IDPoczatkowegoPrzegubu)
             break;
+    }
+
+    if(i >= ListaPrzegubow.size())
+    {
+        cerr<<"Podczas liczenia kinematyki podano numer przegubu poczatkowego: "<<IDPoczatkowegoPrzegubu<<", ale taki przegub nie istnieje!"<<endl;
+        return;
+    }
+
+    for(size_t j = 0; j < ListaPrzegubow[i].ZwrocIloscChwytakow(); j++)
+    {
+        //Petla wyszukujaca z listy chwytakow, chwytak o ID rownym temu znajdujacemu sie na liscie chwytakow podlaczonych do przegubu
+        for(k = 0; k < ListaChwytakow.size(); k++)
+        {
+            if(ListaChwytakow[k].ZwrocIDChwytaka() == ListaPrzegubow[i].ZwrocIDPodlaczonegoChwytaka(j))
+                break;
+        }
+
+        //Dla odpowiedniego rodzaju przegubu modyfikuje odpowiednia macierz
+        if(ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->TypPrzegubu == PrzegubRotacyjny)
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ = glm::rotate(glm::mat4(1.0f), ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji, glm::vec3(0.0f, 0.0f, 1.0f));
+        else
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji));
+
+        ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KinematykaChwytaka = ListaPrzegubow[i].ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ *
+        ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranX * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotX;
     }
 
     //Wyszukuje wszystkie podlaczone ogniwa do rozpatrywanego przegubu
@@ -474,19 +581,53 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDP
 
 }
 
-template <typename TypOgniwa, typename TypPrzegubu>
-uint8_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu, map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > Ograniczenia)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint8_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::PoliczKinematyke(uint16_t IDPoczatkowegoPrzegubu, map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > Ograniczenia,
+                                                                                    map <uint16_t, vector <OgraniczeniePrzestrzeniZadaniowej> > OgraniczeniaChwytaka)
 {
     size_t i;
     size_t k;
 
     glm::mat4 PomKinematykaPrzegubu = glm::mat4(1.0f);
+    glm::mat4 PomKinematykaChwytaka = glm::mat4(1.0f);
     vector <OgraniczeniePrzestrzeniZadaniowej> PomOgraniczenie;
 
     for(i = 0; i < ListaPrzegubow.size(); i++)
     {
         if(ListaPrzegubow[i].ZwrocIDPrzegubu() == IDPoczatkowegoPrzegubu)
             break;
+    }
+
+    if(i >= ListaPrzegubow.size())
+    {
+        cerr<<"Podczas liczenia kinematyki podano numer przegubu poczatkowego: "<<IDPoczatkowegoPrzegubu<<", ale taki przegub nie istnieje!"<<endl;
+        return 0;
+    }
+
+    for(size_t j = 0; j < ListaPrzegubow[i].ZwrocIloscChwytakow(); j++)
+    {
+        //Petla wyszukujaca z listy chwytakow, chwytak o ID rownym temu znajdujacemu sie na liscie chwytakow podlaczonych do przegubu
+        for(k = 0; k < ListaChwytakow.size(); k++)
+        {
+            if(ListaChwytakow[k].ZwrocIDChwytaka() == ListaPrzegubow[i].ZwrocIDPodlaczonegoChwytaka(j))
+                break;
+        }
+
+        //Dla odpowiedniego rodzaju przegubu modyfikuje odpowiednia macierz
+        if(ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->TypPrzegubu == PrzegubRotacyjny)
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ = glm::rotate(glm::mat4(1.0f), ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji, glm::vec3(0.0f, 0.0f, 1.0f));
+        else
+            ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f,ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KonfiguracjaPoczatkowa + ListaChwytakow[k].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->WartoscKonfiguracji));
+
+        PomKinematykaChwytaka = ListaPrzegubow[i].ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotZ *
+        ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranZ * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzTranX * ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->MacierzRotX;
+
+        PomOgraniczenie = OgraniczeniaChwytaka[ListaChwytakow[k].ZwrocIDChwytaka()];
+
+        if(SprawdzOgraniczeniaPrzesZad(PomKinematykaChwytaka, PomOgraniczenie))
+            return 0;
+
+        ListaChwytakow[k].ZwrocWskNaDaneChwytaka()->KinematykaChwytaka = PomKinematykaChwytaka;
     }
 
     //Wyszukuje wszystkie podlaczone ogniwa do rozpatrywanego przegubu
@@ -530,7 +671,7 @@ uint8_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t 
                     if(SprawdzOgraniczeniaPrzesZad(ListaOgniw[k].ZwrocWskKoncowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu, PomOgraniczenie))
                         return 0;
 
-                    if(!PoliczKinematyke(ListaOgniw[k].ZwrocWskKoncowegoPrzegubu()->ZwrocIDPrzegubu(), Ograniczenia))
+                    if(!PoliczKinematyke(ListaOgniw[k].ZwrocWskKoncowegoPrzegubu()->ZwrocIDPrzegubu(), Ograniczenia, OgraniczeniaChwytaka))
                     {
                         ListaOgniw[k].ZwrocWskKoncowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->KinematykaPrzegubu = PomKinematykaPrzegubu;
                         return 0;
@@ -547,8 +688,8 @@ uint8_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::PoliczKinematyke(uint16_t 
 
 //Metoda zwraca macierz transformujaca ogniwo tak aby znajdowalo sie w odpowiednim miejscu i orientacji na scenie
 //Argumentem jest identyfikator ogniwa, dla ktorego chcemy otrzymac macierz
-template <typename TypOgniwa, typename TypPrzegubu>
-glm::mat4 KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZwrocTransformacjeOgniwa(uint16_t IDOgniwa)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+glm::mat4 KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZwrocTransformacjeOgniwa(uint16_t IDOgniwa)
 {
     size_t i;
     for(i = 0; i < ListaOgniw.size(); i++)
@@ -581,8 +722,44 @@ glm::mat4 KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZwrocTransformacjeOgniwa
 
 }
 
-template <typename TypOgniwa, typename TypPrzegubu>
-GLfloat KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZwrocKonfiguracjePrzegubu(uint16_t IDPrzegubu)
+//Metoda zwraca macierz transformujaca chwytaka tak aby znajdowalo sie w odpowiednim miejscu i orientacji na scenie
+//Argumentem jest identyfikator chwytaka, dla ktorego chcemy otrzymac macierz
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+glm::mat4 KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZwrocTransformacjeChwytaka(uint16_t IDChwytaka)
+{
+    size_t i;
+    for(i = 0; i < ListaChwytakow.size(); i++)
+    {
+        if(ListaChwytakow[i].ZwrocIDChwytaka() == IDChwytaka)
+            break;
+    }
+
+    if(i >= ListaChwytakow.size())
+    {
+        cerr<<"Nie ma ogniwa o ID: "<<IDChwytaka<<endl;
+        return glm::mat4(1.0f);
+    }
+
+    if(ListaChwytakow[i].ZwrocWskPoczatkowegoPrzegubu() != NULL)
+    {
+        if(ListaChwytakow[i].ZwrocWskPoczatkowegoPrzegubu()->ZwrocWskNaDanePrzegubu()->TypPrzegubu == PrzegubRotacyjny)
+        {
+            return ListaChwytakow[i].ZwrocWskPoczatkowegoPrzegubu()->ZwrocDanePrzegubu().KinematykaPrzegubu * ListaChwytakow[i].ZwrocDaneChwytaka().MacierzRotZ;
+
+        }else
+        {
+           return ListaChwytakow[i].ZwrocWskPoczatkowegoPrzegubu()->ZwrocDanePrzegubu().KinematykaPrzegubu * ListaChwytakow[i].ZwrocDaneChwytaka().MacierzTranZ;
+        }
+
+    }else
+    {
+        return glm::mat4(1.0f);
+    }
+
+}
+
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+GLfloat KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::ZwrocKonfiguracjePrzegubu(uint16_t IDPrzegubu)
 {
     size_t i;
 
@@ -599,8 +776,8 @@ GLfloat KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::ZwrocKonfiguracjePrzegubu(
     }
 }
 
-template <typename TypOgniwa, typename TypPrzegubu>
-uint8_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::SprawdzOgraniczeniaPrzesZad(glm::mat4 Kinematyka, vector <OgraniczeniePrzestrzeniZadaniowej> Ograniczenia)
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+uint8_t KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::SprawdzOgraniczeniaPrzesZad(glm::mat4 Kinematyka, vector <OgraniczeniePrzestrzeniZadaniowej> Ograniczenia)
 {
     GLfloat WartoscDoPorownaia;
 
@@ -663,8 +840,8 @@ uint8_t KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::SprawdzOgraniczeniaPrzesZa
 }
 
 //Metoda pozwala wyswietlic po koleji kinematyke wszystkich koncowych ogniw
-template <typename TypOgniwa, typename TypPrzegubu>
-void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::WyswietlKinematykeKoncowychOgniw()
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::WyswietlKinematykeKoncowychOgniw()
 {
     //Tworzy macierz pomocnicza
     glm::mat4 MacierzPomocnicza = glm::mat4(1.0f);
@@ -695,4 +872,38 @@ void KLancuchKinematyczny<TypOgniwa, TypPrzegubu>::WyswietlKinematykeKoncowychOg
     }
 }
 
-template class KLancuchKinematyczny<Ogniwo,Przegub>;
+//Metoda pozwala wyswietlic kinematyke chwytaka, argumentem jest identyfikator chwytaka
+template <typename TypOgniwa, typename TypChwytaka, typename TypPrzegubu>
+void KLancuchKinematyczny<TypOgniwa, TypChwytaka, TypPrzegubu>::WyswietlKinematykeChwytaka(uint16_t IDChwytaka)
+{
+    size_t i;
+
+    for(i = 0; i < ListaChwytakow.size(); i++)
+    {
+        if(ListaChwytakow[i].ZwrocIDChwytaka() == IDChwytaka)
+            break;
+    }
+
+    if(i >= ListaChwytakow.size())
+    {
+        cerr<<"Nie mozna wyswietlic kinematyki chwytaka o ID: "<<IDChwytaka<<", poniewaz chwytak nie istnieje!"<<endl;
+        return;
+    }
+
+    //Wyswietlanie identyfikatora chwytaka oraz macierzy kinematyki
+    cout<<endl;
+    cout<<"ID chwytaka: "<<ListaChwytakow[i].ZwrocIDChwytaka()<<", kinematyka chwytaka: "<<endl;
+
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0;j < 4; j++)
+        {
+            cout<<setprecision(7)<<showpos<<showpoint<<ListaChwytakow[i].ZwrocDaneChwytaka().KinematykaChwytaka[j][i]<<"\t";
+        }
+        cout<<endl;
+    }
+
+
+}
+
+template class KLancuchKinematyczny<Ogniwo, Chwytak, Przegub>;
